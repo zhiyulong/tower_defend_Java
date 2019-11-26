@@ -1,9 +1,23 @@
 
+import javafx.application.Application;
+
 public class TowerDefense {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		Application.launch(View.class, args);
 
+	}
+	
+	
+	public static Controller setRelations(View view) {
+		
+		Model model = new Model();
+		Controller controller = new Controller(model);
+		
+		model.addObserver(view);
+		
+		return controller;
 	}
 
 }
