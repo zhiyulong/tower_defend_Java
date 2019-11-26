@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -31,6 +32,10 @@ public class View extends Application implements Observer{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
+		mainPane = new BorderPane();
+		gameboard = new GridPane();
+		Scene scene = new Scene(mainPane);
+		
 		// set MVC relation first
 		controller = TowerDefense.setRelations(this);
 		
@@ -38,7 +43,6 @@ public class View extends Application implements Observer{
 		setupWindow();
 		
 		
-		Scene scene = new Scene(mainPane);
 		primaryStage.setTitle("Tower Defense");
 		primaryStage.setScene(scene); 
 		primaryStage.show();
@@ -47,8 +51,6 @@ public class View extends Application implements Observer{
 	
 	private void setupWindow() {
 		
-		mainPane = new BorderPane();
-		gameboard = new GridPane();
 		
 		setupMenu();
 		
@@ -68,7 +70,8 @@ public class View extends Application implements Observer{
 			
 			// set action for buying a tower
 			tower.setOnAction(e -> {
-				System.out.println("buy");
+				controller.buyTower(Character.getNumericValue(tower.getText().charAt(7)));
+				
 			});
 			
 			buyTowers.getItems().add(tower);
@@ -102,6 +105,7 @@ public class View extends Application implements Observer{
 			gameboard.add(new ImageView(redland), 9, r);
 			
 		}
+		controller.addEventForGameBoard(gameboard);
 		mainPane.setCenter(gameboard);
 	}
 	
