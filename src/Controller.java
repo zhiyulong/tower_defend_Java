@@ -12,12 +12,15 @@ import javafx.scene.paint.Color;
 public class Controller {
 
 	private Model model;
-	private int settingTower = 0;
-	private int[] newTowerPos = null;
+	private int settingTower;
+	private int[] newTowerPos;
 
 	
 	public Controller(Model model) {
 		this.model = model;
+		
+		settingTower = 0;
+		newTowerPos = null;
 	}
 	
 	public void buyTower(int tower) {
@@ -38,6 +41,8 @@ public class Controller {
             
                 	setPos(mouseX, mouseY);	
                 }
+                else
+                	newTowerPos = null;
             }
 
         });
