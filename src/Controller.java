@@ -14,10 +14,11 @@ public class Controller {
 	private Model model;
 	private int settingTower = 0;
 	private int[] newTowerPos = null;
+	private int currency;
 
-	
 	public Controller(Model model) {
 		this.model = model;
+		this.currency = model.getCurrency();
 	}
 	
 	public void buyTower(int tower) {
@@ -88,4 +89,10 @@ public class Controller {
 		}
 	
 	}
+	
+	public int getCurrency() {
+		return currency;
+	}
+	
+	
 }
