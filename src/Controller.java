@@ -36,7 +36,7 @@ public class Controller {
 		this.model = model;
 
 		settingTower = 0;
-		newTowerPos = null;
+		newTowerPos = null ;
 
 		this.currency = model.getCurrency();
 
