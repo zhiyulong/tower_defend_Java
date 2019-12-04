@@ -29,8 +29,8 @@ public class Enemie {
 		movement.setToX(-584);
 		movement.setCycleCount(1);
 		movement.play();
-		
 	}
+	
 	
 	
 	public ImageView getView() {

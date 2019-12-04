@@ -1,9 +1,14 @@
 
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
@@ -44,14 +49,16 @@ public class View extends Application implements Observer{
 		
 		// set up the game
 		setupGame();
-		
+
 		
 		primaryStage.setTitle("Tower Defense");
 		primaryStage.setScene(scene); 
 		primaryStage.show();
+		
+
 	}
 
-	
+
 	private void setupGame() {
 		
 		displayHome();
@@ -61,8 +68,18 @@ public class View extends Application implements Observer{
 		setupGameBoard();
 		
 		controller.setUpEnemies(gameboard);
+		
+		
 	}
-	
+	private class AnimationHandler implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	private void setupMenu() {
 		MenuBar menu = new MenuBar();
 		

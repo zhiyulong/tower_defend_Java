@@ -30,6 +30,8 @@ public class Controller {
 	private Label currency_label;
 	private Label buying_status_label;
 	private Label blood_label;
+	
+	private int enemiesPerTimes;
 
 
 	public Controller(Model model) {
@@ -39,7 +41,7 @@ public class Controller {
 		newTowerPos = null;
 
 		this.currency = model.getCurrency();
-
+		enemiesPerTimes = 4;
 	}
 	
 	public void buyTower(int tower) {
@@ -108,16 +110,23 @@ public class Controller {
 	}
 	
 	public void setUpEnemies(GridPane gameboard) {
-		Random rand=new Random();
+
+			if(model.getBlood()!=0 && model.getEnemy().size()==0) {
+				
+				Random rand=new Random();
+				for (int i=0; i<enemiesPerTimes; i++) {
+					int row = rand.nextInt(6);
+					int enimeID = rand.nextInt(4);
+					Enemie enemie = new Enemie(enimeID);
+					model.addNewEnemies(enimeID);
+					gameboard.add(enemie.getView(), 9, row);
+				}
+				
+				
+			}
+			System.out.println( model.getEnemy().get(0).getView().getX());
 		
-		// just for testing !!!!!!!
-		for (int i=0; i<4; i++) {
-			int row = rand.nextInt(6);
-			int enimeID = rand.nextInt(4);
-			Enemie enemie = new Enemie(enimeID);
-			
-			gameboard.add(enemie.getView(), 9, row);
-		}
+	
 	}
 	
 	private void sellTower(Tower tower) {

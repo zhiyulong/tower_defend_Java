@@ -3,6 +3,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -35,7 +36,7 @@ public class Tower {
 		movement.setCycleCount(Animation.INDEFINITE);
 		movement.setNode(movingPower);
 		movement.play();
-		
+
 		
 	}
 	
