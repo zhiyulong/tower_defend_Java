@@ -1,5 +1,8 @@
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -15,6 +18,7 @@ public class Tower {
 	
 	private Color[] powerColor = new Color[]{Color.RED, Color.BLUE, Color.DEEPPINK, 
 								Color.YELLOW, Color.GREEN, Color.ORANGE};
+	private double[] powerSpeed = new double[]{2.5, 2, 1.4, 1, 0.8, 0.4};
 	
 	public Tower(int num) {
 		towerID = num;
@@ -26,12 +30,16 @@ public class Tower {
 		movingPower.setRadius(8);
 				
 		movement = new TranslateTransition();
-		movement.setDuration(Duration.seconds(2));
+		movement.setDuration(Duration.seconds(powerSpeed[num-1]));
 		movement.setToX(584);
 		movement.setCycleCount(Animation.INDEFINITE);
 		movement.setNode(movingPower);
 		movement.play();
+		
+		
 	}
+	
+	
 	
 	public int getID() {
 		return towerID;

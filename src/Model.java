@@ -4,10 +4,13 @@ import java.util.Observable;
 public class Model extends Observable{
 
 	private int currency;
+	private double blood;
+	
 	private ArrayList<ArrayList<Tower>> board;
 	
 	public Model() {
-		currency = 8;
+		currency = 15;
+		blood = 100;
 		
 		board = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
@@ -18,6 +21,7 @@ public class Model extends Observable{
 			board.add(column);
 		}
 	}
+	
 	
 	public Tower removeTower(int row, int col) {
 		Tower tower = board.get(row).get(col);
@@ -33,7 +37,7 @@ public class Model extends Observable{
 			return null;
 		
 		Tower tower = new Tower(towerID);
-		board.get(row).add(col, tower);
+		board.get(row).set(col, tower);
 		return tower;
 	}
 	
@@ -79,7 +83,9 @@ public class Model extends Observable{
 	}
 	
 	
-	
+	public double getBlood() {
+		return blood;
+	}
 	
 	
 }

@@ -26,6 +26,8 @@ public class Controller {
 
 	private int currency;
 	private Label currency_label;
+	private Label buying_status_label;
+	private Label blood_label;
 
 
 	public Controller(Model model) {
@@ -43,7 +45,9 @@ public class Controller {
 			settingTower = tower;
 			
 			currency = model.subtractCurrency(settingTower);
-			setCurrencyLabel(currency_label);
+			currency_label.setText("$ "+currency);;
+			
+			buying_status_label.setText("Placing #"+tower);
 		}
 	}
 	
@@ -85,7 +89,8 @@ public class Controller {
 					// right click cancel buying the tower
 					if (event.getButton() == MouseButton.SECONDARY) {
 						currency = model.addCurrency(settingTower);
-						setCurrencyLabel(currency_label);
+						currency_label.setText("$ "+currency);;
+						buying_status_label.setText("Not buying");
 						
 						settingTower = 0;
 						newTowerPos = null;
@@ -102,7 +107,7 @@ public class Controller {
 	
 	private void sellTower(Tower tower) {
 		currency = model.addCurrency(tower.getID());
-		setCurrencyLabel(currency_label);
+		currency_label.setText("$ "+currency);;
 		
 		tower.remove();
 	}
@@ -118,6 +123,9 @@ public class Controller {
 			newTowerPos = null;
 			
 			gameboard.add(tower.getMovement(), col, row);
+			
+			buying_status_label.setText("Not buying");
+			
 		}
 		
 	}
@@ -125,7 +133,16 @@ public class Controller {
 	
 	public void setCurrencyLabel(Label label) {
 		currency_label = label;
-		label.setText("$ " + currency);
+		currency_label.setText("$ "+currency);
+	}
+	
+	public void setBuyingStatus(Label status) {
+		buying_status_label = status;
+	}
+	
+	public void setBloodStatus(Label blood) {
+		blood_label = blood;
+		blood_label.setText("Blood: "+model.getBlood());
 	}
 	
 	private void setPos(int x, int y) {

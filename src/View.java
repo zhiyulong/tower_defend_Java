@@ -54,6 +54,7 @@ public class View extends Application implements Observer{
 	
 	private void setupWindow() {
 		
+		displayHome();
 		
 		setupMenu();
 		
@@ -64,14 +65,20 @@ public class View extends Application implements Observer{
 	private void setupMenu() {
 		MenuBar menu = new MenuBar();
 		
-		// but towers
+		// buy towers
 		Menu buyTowers = new Menu();
 		buyTowers.setText("Buy Towers");
+		// buying status
+		Label buying_label = new Label("Not buying");
+		controller.setBuyingStatus(buying_label);
+		Menu buyingStatus = new Menu("", buying_label);
+		
 		
 		// currency
 		Label currency_label = new Label();
 		controller.setCurrencyLabel(currency_label);
 		Menu currency = new Menu("", currency_label);
+		
 				
 		for (int i = 1; i < 7; i++) {
 			MenuItem tower = new MenuItem();
@@ -86,8 +93,16 @@ public class View extends Application implements Observer{
 			buyTowers.getItems().add(tower);
 		}
 		
+		// blood status
+		Label blood_label = new Label();
+		controller.setBloodStatus(blood_label);
+		Menu blood = new Menu("", blood_label);
+		
 		menu.getMenus().add(buyTowers);
+		menu.getMenus().add(buyingStatus);
 		menu.getMenus().add(currency);
+		menu.getMenus().add(blood);
+		
 		mainPane.setTop(menu);
 	}
 	
@@ -96,7 +111,7 @@ public class View extends Application implements Observer{
 		gameboard.setVgap(4);
 		gameboard.setHgap(1);
 		// set margin
-		gameboard.setPadding(new Insets(5,0,0,0));
+		gameboard.setPadding(new Insets(0,0,0,0));
 		// fill the background
 		gameboard.setBackground(new Background (
 				new BackgroundFill(Color.HONEYDEW,CornerRadii.EMPTY,Insets.EMPTY)));
@@ -118,6 +133,12 @@ public class View extends Application implements Observer{
 		mainPane.setCenter(gameboard);
 	}
 	
+	private void displayHome() {
+		ImageView tower = new ImageView(new Image("./images/TOWER.png"));
+		tower.setFitHeight(410);
+		tower.setFitWidth(100);
+		mainPane.setLeft(tower);
+	}
 	
 	@Override
 	public void update(Observable o, Object arg) {
