@@ -42,8 +42,8 @@ public class View extends Application implements Observer{
 		// set MVC relation first
 		controller = TowerDefense.setRelations(this);
 		
-		// set up the game board
-		setupWindow();
+		// set up the game
+		setupGame();
 		
 		
 		primaryStage.setTitle("Tower Defense");
@@ -52,7 +52,7 @@ public class View extends Application implements Observer{
 	}
 
 	
-	private void setupWindow() {
+	private void setupGame() {
 		
 		displayHome();
 		
@@ -60,6 +60,7 @@ public class View extends Application implements Observer{
 		
 		setupGameBoard();
 		
+		controller.setUpEnemies(gameboard);
 	}
 	
 	private void setupMenu() {

@@ -1,5 +1,7 @@
 
 
+import java.util.Random;
+
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -103,6 +105,19 @@ public class Controller {
 			
 		 });
 		 
+	}
+	
+	public void setUpEnemies(GridPane gameboard) {
+		Random rand=new Random();
+		
+		// just for testing !!!!!!!
+		for (int i=0; i<4; i++) {
+			int row = rand.nextInt(6);
+			int enimeID = rand.nextInt(4);
+			Enemie enemie = new Enemie(enimeID);
+			
+			gameboard.add(enemie.getView(), 9, row);
+		}
 	}
 	
 	private void sellTower(Tower tower) {
