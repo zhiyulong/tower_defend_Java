@@ -15,10 +15,11 @@ public class Enemie {
 	public int blood;
 	
 	private int[] speed = new int[]{40, 30, 20, 15};
+	private int[] live = new int[]{50, 70, 80, 100};
 	
 	public Enemie(int num) {
 		enemieID = num+1;
-		blood = 100;
+		blood = live[num];
 		
 		image = new ImageView(new Image("./images/enemie"+(num+1)+".gif"));
 		image.setFitHeight(65);

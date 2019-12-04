@@ -122,7 +122,7 @@ public class Controller {
 	
 	private void sellTower(Tower tower) {
 		currency = model.addCurrency(tower.getID());
-		currency_label.setText("$ "+currency);;
+		currency_label.setText("$ "+currency);
 		
 		tower.remove();
 	}
