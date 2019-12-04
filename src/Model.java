@@ -5,7 +5,7 @@ public class Model extends Observable{
 	private int currency;
 	
 	public Model() {
-		currency = 2;
+		currency = 8;
 	}
 	
 	
@@ -23,8 +23,9 @@ public class Model extends Observable{
 	 * 
 	 * @param amount	int of what is to be subtracted from the player's balance.
 	 */
-	public void subtractCurrency(int amount) {
+	public int subtractCurrency(int amount) {
 		currency -= amount;
+		return currency;
 	}
 	
 	/**

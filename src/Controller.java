@@ -2,6 +2,7 @@ import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -17,6 +18,7 @@ public class Controller {
 	private int[] newTowerPos;
 
 	private int currency;
+	private Label currency_label;
 
 
 	public Controller(Model model) {
@@ -71,8 +73,17 @@ public class Controller {
 		
 		gameboard.add(new ImageView(green), col, row);
 		
+		currency = model.subtractCurrency(settingTower);
+		setCurrencyLabel(currency_label);
+		
 		settingTower = 0;
 		newTowerPos = null;
+	}
+	
+	
+	public void setCurrencyLabel(Label label) {
+		currency_label = label;
+		label.setText("$ " + currency);
 	}
 	
 	private void setPos(int x, int y) {
@@ -98,10 +109,6 @@ public class Controller {
 			newTowerPos = pos;
 		}
 	
-	}
-	
-	public int getCurrency() {
-		return currency;
 	}
 	
 	
