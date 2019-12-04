@@ -7,11 +7,12 @@ public class Model extends Observable{
 	private double blood;
 	
 	private ArrayList<ArrayList<Tower>> board;
+	private ArrayList<Enemie> enemies;
 	
 	public Model() {
 		currency = 15;
 		blood = 100;
-		
+		enemies=new ArrayList<>();
 		board = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			ArrayList<Tower> column = new ArrayList<>();
@@ -20,6 +21,7 @@ public class Model extends Observable{
 			}
 			board.add(column);
 		}
+
 	}
 	
 	
@@ -30,7 +32,14 @@ public class Model extends Observable{
 		
 		return tower;
 	}
-	
+	public ArrayList<Enemie> getEnemy(){
+		return enemies;
+	}
+	public Enemie addNewEnemies(int id) {
+		Enemie enemy=new Enemie(id);
+		enemies.add(enemy);
+		return enemy;
+	}
 	public Tower addNewTower(int towerID, int row, int col) {
 		
 		if (board.get(row).get(col) != null)
