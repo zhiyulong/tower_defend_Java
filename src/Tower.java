@@ -12,17 +12,20 @@ public class Tower {
 	private Image image;
 	private Circle movingPower;
 	
+	private Color[] powerColor = new Color[]{Color.RED, Color.BLUE, Color.DEEPPINK, 
+								Color.YELLOW, Color.GREEN, Color.ORANGE};
+	
 	public Tower(int num) {
 		towerID = num;
 		image = new Image("./images/tower"+num+".png");
 		
 		// tower attack visualization
 		movingPower = new Circle();
-		movingPower.setFill(Color.RED);
+		movingPower.setFill(powerColor[num-1]);
 		movingPower.setRadius(8);
 				
 		TranslateTransition movement = new TranslateTransition();
-		movement.setDuration(Duration.seconds(3));
+		movement.setDuration(Duration.seconds(2));
 		movement.setToX(584);
 		movement.setCycleCount(Animation.INDEFINITE);
 		movement.setNode(movingPower);
