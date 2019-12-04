@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -61,16 +62,22 @@ public class View extends Application implements Observer{
 	private void setupMenu() {
 		MenuBar menu = new MenuBar();
 		
+		// but towers
 		Menu buyTowers = new Menu();
 		buyTowers.setText("Buy Towers");
 		
+		// currency
+		Menu currency_label = new Menu();
+		int currency = controller.getCurrency();
+		currency_label.setText("$ " + Integer.toString(currency));
+		
 		for (int i = 1; i < 7; i++) {
 			MenuItem tower = new MenuItem();
-			tower.setText("Tower #" + i);
+			tower.setText("$"+i+" Tower #" + i);
 			
 			// set action for buying a tower
 			tower.setOnAction(e -> {
-				controller.buyTower(Character.getNumericValue(tower.getText().charAt(7)));
+				controller.buyTower(Character.getNumericValue(tower.getText().charAt(10)));
 				
 			});
 			
@@ -78,12 +85,12 @@ public class View extends Application implements Observer{
 		}
 		
 		menu.getMenus().add(buyTowers);
+		menu.getMenus().add(currency_label);
 		mainPane.setTop(menu);
 	}
 	
 	
 	private void setupGameBoard() {
-		
 		gameboard.setVgap(4);
 		gameboard.setHgap(1);
 		// set margin

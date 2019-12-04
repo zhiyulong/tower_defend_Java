@@ -12,20 +12,26 @@ import javafx.scene.paint.Color;
 public class Controller {
 
 	private Model model;
+
 	private int settingTower;
 	private int[] newTowerPos;
 
-	
+	private int currency;
+
+
 	public Controller(Model model) {
 		this.model = model;
-		
+
 		settingTower = 0;
 		newTowerPos = null;
+
+		this.currency = model.getCurrency();
+
 	}
 	
 	public void buyTower(int tower) {
-		
-		settingTower = tower;
+		if (currency >= tower)
+			settingTower = tower;
 	}
 	
 	Image green = new Image("./images/green.png");
@@ -61,7 +67,7 @@ public class Controller {
 	}
 	
 	private void placeTower(GridPane gameboard, int row, int col) {
-		Image green = new Image("./images/enemie"+settingTower+".png");
+		Image green = new Image("./images/tower"+settingTower+".png");
 		
 		gameboard.add(new ImageView(green), col, row);
 		
@@ -93,4 +99,10 @@ public class Controller {
 		}
 	
 	}
+	
+	public int getCurrency() {
+		return currency;
+	}
+	
+	
 }
