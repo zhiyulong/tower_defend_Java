@@ -74,29 +74,20 @@ public class Controller {
 	}
 	
 	private void placeTower(GridPane gameboard, int row, int col) {
-		Image tower = new Image("./images/tower"+settingTower+".png");
 		
-		gameboard.add(new ImageView(tower), col, row);
+		Tower tower = model.addNewTower(settingTower, row, col);
 		
-		currency = model.subtractCurrency(settingTower);
-		setCurrencyLabel(currency_label);
-		
-		settingTower = 0;
-		newTowerPos = null;
-		
-		// tower attack visualization
-		Circle power = new Circle();
-		power.setFill(Color.RED);
-		power.setRadius(8);
-		
-		TranslateTransition movement = new TranslateTransition();
-		movement.setDuration(Duration.seconds(3));
-		movement.setToX(584);
-		movement.setCycleCount(Animation.INDEFINITE);
-		movement.setNode(power);
-		movement.play();
-		
-		gameboard.add(power, col, row);
+		if (tower != null) {
+			gameboard.add(tower.getView(), col, row);
+			
+			currency = model.subtractCurrency(settingTower);
+			setCurrencyLabel(currency_label);
+			
+			settingTower = 0;
+			newTowerPos = null;
+			
+			gameboard.add(tower.getMovement(), col, row);
+		}
 		
 	}
 	

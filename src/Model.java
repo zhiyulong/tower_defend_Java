@@ -1,13 +1,34 @@
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class Model extends Observable{
 
 	private int currency;
+	private ArrayList<ArrayList<Tower>> board;
 	
 	public Model() {
 		currency = 8;
+		
+		board = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			ArrayList<Tower> column = new ArrayList<>();
+			for (int j = 0; j < 9; j++) {
+				column.add(null);
+			}
+			board.add(column);
+		}
 	}
 	
+	
+	public Tower addNewTower(int towerID, int row, int col) {
+		
+		if (board.get(row).get(col) != null)
+			return null;
+		
+		Tower tower = new Tower(towerID);
+		board.get(row).add(col, tower);
+		return tower;
+	}
 	
 	/**
 	 * Adds currency to the player's balance.
@@ -48,6 +69,8 @@ public class Model extends Observable{
 	public int getCurrency() {
 		return currency;
 	}
+	
+	
 	
 	
 	
