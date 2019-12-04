@@ -130,6 +130,7 @@ public class Controller implements Observer{
 				
 					Enemie enemie  = new Enemie(enimeID);;
 					enemie.addObserver(this);
+					model.addTargets(row, enemie);
 					
 					gameboard.add(enemie.getView(), 9, row);
 				}
@@ -226,6 +227,14 @@ public class Controller implements Observer{
 			if (enemiesSize == 2)
 				setUpEnemies();
 		}
+		
+		// enemy killed by tower
+		if (o instanceof Tower) {
+			enemiesSize--;
+			if (enemiesSize == 2)
+				setUpEnemies();
+		}
+		
 	}
 	
 	

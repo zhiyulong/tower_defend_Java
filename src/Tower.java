@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Observable;
 
 import javafx.animation.Animation;
@@ -27,7 +28,13 @@ public class Tower extends Observable{
 								Color.YELLOW, Color.GREEN, Color.ORANGE};
 	private double[] powerSpeed = new double[]{2.5, 2, 1.4, 1, 0.8, 0.4};
 	
-	public Tower(int num) {
+	private int col;
+	private ArrayList<Enemie> targets;
+	
+	private boolean removed;
+	
+	public Tower(int num, int col) {
+		this.col = col;
 		towerID = num;
 		image = new ImageView(new Image("./images/tower"+num+".png"));
 		
@@ -43,15 +50,52 @@ public class Tower extends Observable{
 		movement.setNode(movingPower);
 		movement.play();
 		
+		targets = new ArrayList<Enemie>();
+		removed = false;
 		movementEvent();
 		
 	}
 	
 	public void movementEvent() {
 		
+		movingPower.translateXProperty().addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				if (!removed) {
+					for (Enemie target: targets) {
+						if (target.getBlood() > 0) {
+							int targetX = getCol(target.getTransX()) + 1;
+							int x = getCol(movingPower.getTranslateX()) + col;
+							if (targetX < 9 && x <9 && targetX==x) {
+								target.remove();
+								
+								setChanged();
+						  		notifyObservers();
+							}
+						}
+					}
+				}
+			}
+		});
 		
 	}
 	
+	private int getCol(double x) {
+		int col = 0;
+		
+		int minx = 0, maxx = 70;
+		while (!(x >= minx && x <= maxx)) {
+			col += 1;
+			minx = maxx + 1;
+			maxx += 65 + 1;
+		}
+		
+		return col;
+	}
+	
+	public void addTarget(Enemie ene) {
+		targets.add(ene);
+	}
 	
 	public int getID() {
 		return towerID;
@@ -66,6 +110,8 @@ public class Tower extends Observable{
 	}
 	
 	public void remove() {
+		removed = true;
+		
 		movement.stop();
 		image.setVisible(false);
 		movingPower.setVisible(false);

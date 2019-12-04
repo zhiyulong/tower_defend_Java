@@ -20,7 +20,7 @@ public class Enemie extends Observable{
 	
 	private TranslateTransition movement;
 	
-	public int blood;
+	private int blood;
 	
 	private int[] speed = new int[]{40, 30, 20, 15};
 	private int[] live = new int[]{50, 70, 80, 100};
@@ -47,7 +47,7 @@ public class Enemie extends Observable{
 		movement.setOnFinished(new EventHandler<ActionEvent>() {
 		      @Override 
 		      public void handle(ActionEvent t) {
-		    	 if (blood != 0) {
+		    	 if (blood > 0) {
 		    		 setChanged();
 			  		 notifyObservers(enemieID+"enemies arrive!");
 		    	 }
@@ -55,7 +55,12 @@ public class Enemie extends Observable{
 		});
 	}
 	
+	public double getTransX() {
+		return 584 + image.getTranslateX();
+	}
+	
 	public void remove() {
+		blood = 0;
 		movement.stop();
 		image.setVisible(false);
 	}
@@ -70,6 +75,10 @@ public class Enemie extends Observable{
 	
 	public int getBlood() {
 		return blood;
+	}
+	
+	public void setBlood(int blood) {
+		this.blood = blood;
 	}
 	
 	public TranslateTransition getMovement() {

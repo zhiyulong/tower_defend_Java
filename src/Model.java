@@ -7,12 +7,14 @@ public class Model {
 	private double blood;
 	
 	private ArrayList<ArrayList<Tower>> board;
+	private ArrayList<ArrayList<Enemie>> targets;
 	
 	public Model() {
 		currency = 15;
 		blood = 100;
 
 		board = new ArrayList<>();
+		targets = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			ArrayList<Tower> column = new ArrayList<>();
 			
@@ -21,6 +23,9 @@ public class Model {
 			}
 			
 			board.add(column);
+			
+			ArrayList<Enemie> targetsPerRow = new ArrayList<Enemie>();
+			targets.add(targetsPerRow);
 		}
 
 	}
@@ -40,9 +45,19 @@ public class Model {
 		if (board.get(row).get(col) != null)
 			return null;
 		
-		Tower tower = new Tower(towerID);
+		Tower tower = new Tower(towerID, col);
 		board.get(row).set(col, tower);
+		
+		for (Enemie target: targets.get(row)) {
+			if (target.getBlood() > 0) 
+				tower.addTarget(target);
+		}
 		return tower;
+	}
+	
+	
+	public void addTargets(int row, Enemie ene) {
+		targets.get(row).add(ene);
 	}
 	
 	/**
