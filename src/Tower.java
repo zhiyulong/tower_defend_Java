@@ -9,22 +9,23 @@ import javafx.util.Duration;
 public class Tower {
 	
 	private int towerID;
-	private Image image;
+	private ImageView image;
 	private Circle movingPower;
+	private TranslateTransition movement;
 	
 	private Color[] powerColor = new Color[]{Color.RED, Color.BLUE, Color.DEEPPINK, 
 								Color.YELLOW, Color.GREEN, Color.ORANGE};
 	
 	public Tower(int num) {
 		towerID = num;
-		image = new Image("./images/tower"+num+".png");
+		image = new ImageView(new Image("./images/tower"+num+".png"));
 		
 		// tower attack visualization
 		movingPower = new Circle();
 		movingPower.setFill(powerColor[num-1]);
 		movingPower.setRadius(8);
 				
-		TranslateTransition movement = new TranslateTransition();
+		movement = new TranslateTransition();
 		movement.setDuration(Duration.seconds(2));
 		movement.setToX(584);
 		movement.setCycleCount(Animation.INDEFINITE);
@@ -37,11 +38,17 @@ public class Tower {
 	}
 	
 	public ImageView getView() {
-		return new ImageView(image);
+		return image;
 	}
 	
 	public Circle getMovement() {
 		return movingPower;
+	}
+	
+	public void remove() {
+		movement.stop();
+		image.setVisible(false);
+		movingPower.setVisible(false);
 	}
 	
 }

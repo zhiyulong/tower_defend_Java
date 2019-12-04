@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -38,8 +39,12 @@ public class Controller {
 	}
 	
 	public void buyTower(int tower) {
-		if (currency >= tower)
+		if (currency >= tower) {
 			settingTower = tower;
+			
+			currency = model.subtractCurrency(settingTower);
+			setCurrencyLabel(currency_label);
+		}
 	}
 	
 	
@@ -63,14 +68,43 @@ public class Controller {
 		gameboard.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override 
 			public void handle(MouseEvent event) {
-				if (settingTower != 0 && newTowerPos != null) {
+				
+				// check removing tower
+				if (settingTower == 0 && event.getButton() == MouseButton.SECONDARY) {
+					int[] pos = getPos((int) event.getX(), (int) event.getY());
 					
-					placeTower(gameboard, newTowerPos[0], newTowerPos[1]);
+					Tower tower = model.removeTower(pos[0], pos[1]);
+					
+					if (tower != null)
+						sellTower(tower);
+				}
+					
+				// check adding tower
+				else if (settingTower != 0 && newTowerPos != null) {
+					
+					// right click cancel buying the tower
+					if (event.getButton() == MouseButton.SECONDARY) {
+						currency = model.addCurrency(settingTower);
+						setCurrencyLabel(currency_label);
+						
+						settingTower = 0;
+						newTowerPos = null;
+					}
+					else
+						placeTower(gameboard, newTowerPos[0], newTowerPos[1]);
 				}
 	        }
+
 			
 		 });
 		 
+	}
+	
+	private void sellTower(Tower tower) {
+		currency = model.addCurrency(tower.getID());
+		setCurrencyLabel(currency_label);
+		
+		tower.remove();
 	}
 	
 	private void placeTower(GridPane gameboard, int row, int col) {
@@ -79,9 +113,6 @@ public class Controller {
 		
 		if (tower != null) {
 			gameboard.add(tower.getView(), col, row);
-			
-			currency = model.subtractCurrency(settingTower);
-			setCurrencyLabel(currency_label);
 			
 			settingTower = 0;
 			newTowerPos = null;
@@ -98,6 +129,16 @@ public class Controller {
 	}
 	
 	private void setPos(int x, int y) {
+		
+		int[] pos = getPos(x, y);
+		
+		if (pos[0] < 6 && pos[1] < 9) {
+			newTowerPos = pos;
+		}
+	
+	}
+	
+	private int[] getPos(int x, int y) {
 		
 		// pos[0]:row, pos[1]:col
 		int[] pos = new int[2];
@@ -116,10 +157,7 @@ public class Controller {
 			maxy += 65 + 4;
 		}
 		
-		if (pos[0] < 6 && pos[1] < 9) {
-			newTowerPos = pos;
-		}
-	
+		return pos;
 	}
 	
 	

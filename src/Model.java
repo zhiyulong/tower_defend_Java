@@ -19,6 +19,13 @@ public class Model extends Observable{
 		}
 	}
 	
+	public Tower removeTower(int row, int col) {
+		Tower tower = board.get(row).get(col);
+		if (tower != null)
+			board.get(row).set(col, null);
+		
+		return tower;
+	}
 	
 	public Tower addNewTower(int towerID, int row, int col) {
 		
@@ -35,8 +42,9 @@ public class Model extends Observable{
 	 * 
 	 * @param amount	int of what is to be added to the player's balance.
 	 */
-	public void addCurrency(int amount) {
+	public int addCurrency(int amount) {
 		currency += amount;
+		return currency;
 	}
 	
 	/**
