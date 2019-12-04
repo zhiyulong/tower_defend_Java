@@ -1,16 +1,22 @@
+import java.util.Observable;
+
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.TouchEvent;
+import javafx.scene.input.TouchPoint;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Tower {
+public class Tower extends Observable{
 	
 	private int towerID;
 	private ImageView image;
@@ -36,10 +42,15 @@ public class Tower {
 		movement.setCycleCount(Animation.INDEFINITE);
 		movement.setNode(movingPower);
 		movement.play();
-
+		
+		movementEvent();
 		
 	}
 	
+	public void movementEvent() {
+		
+		
+	}
 	
 	
 	public int getID() {

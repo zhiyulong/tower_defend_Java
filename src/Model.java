@@ -1,24 +1,25 @@
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class Model extends Observable{
+public class Model {
 
 	private int currency;
 	private double blood;
 	
 	private ArrayList<ArrayList<Tower>> board;
-	private ArrayList<Enemie> enemies;
 	
 	public Model() {
 		currency = 15;
 		blood = 100;
-		enemies=new ArrayList<>();
+
 		board = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			ArrayList<Tower> column = new ArrayList<>();
+			
 			for (int j = 0; j < 9; j++) {
 				column.add(null);
 			}
+			
 			board.add(column);
 		}
 
@@ -32,14 +33,8 @@ public class Model extends Observable{
 		
 		return tower;
 	}
-	public ArrayList<Enemie> getEnemy(){
-		return enemies;
-	}
-	public Enemie addNewEnemies(int id) {
-		Enemie enemy=new Enemie(id);
-		enemies.add(enemy);
-		return enemy;
-	}
+	
+	
 	public Tower addNewTower(int towerID, int row, int col) {
 		
 		if (board.get(row).get(col) != null)
@@ -94,6 +89,10 @@ public class Model extends Observable{
 	
 	public double getBlood() {
 		return blood;
+	}
+	
+	public void setBlood(double blood) {
+		this.blood = blood;
 	}
 	
 	

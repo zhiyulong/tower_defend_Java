@@ -29,7 +29,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class View extends Application implements Observer{
+public class View extends Application {
 
 	private Controller controller;
 	
@@ -67,7 +67,7 @@ public class View extends Application implements Observer{
 		
 		setupGameBoard();
 		
-		controller.setUpEnemies(gameboard);
+		controller.setUpEnemies();
 		
 		
 	}
@@ -158,10 +158,5 @@ public class View extends Application implements Observer{
 		mainPane.setLeft(tower);
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		
-		
-	}
 
 }

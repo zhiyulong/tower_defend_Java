@@ -1,5 +1,8 @@
 
 
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javafx.animation.Animation;
@@ -19,7 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Controller {
+public class Controller implements Observer{
 
 	private Model model;
 
@@ -32,7 +35,9 @@ public class Controller {
 	private Label blood_label;
 	
 	private int enemiesPerTimes;
+	private int enemiesSize;
 
+	GridPane gameboard;
 
 	public Controller(Model model) {
 		this.model = model;
@@ -42,6 +47,7 @@ public class Controller {
 
 		this.currency = model.getCurrency();
 		enemiesPerTimes = 4;
+		enemiesSize = 0;
 	}
 	
 	public void buyTower(int tower) {
@@ -58,6 +64,8 @@ public class Controller {
 	
 	public void addEventForGameBoard(GridPane gameboard) {
 		
+		this.gameboard = gameboard;
+		
 		gameboard.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override 
             public void handle(MouseEvent event) {
@@ -69,6 +77,7 @@ public class Controller {
                 }
                 else
                 	newTowerPos = null;
+                
             }
 
         });
@@ -100,7 +109,7 @@ public class Controller {
 						newTowerPos = null;
 					}
 					else
-						placeTower(gameboard, newTowerPos[0], newTowerPos[1]);
+						placeTower(newTowerPos[0], newTowerPos[1]);
 				}
 	        }
 
@@ -109,24 +118,24 @@ public class Controller {
 		 
 	}
 	
-	public void setUpEnemies(GridPane gameboard) {
+	public void setUpEnemies() {
 
-			if(model.getBlood()!=0 && model.getEnemy().size()==0) {
+			if(model.getBlood() > 0) {
 				
 				Random rand=new Random();
 				for (int i=0; i<enemiesPerTimes; i++) {
+					
 					int row = rand.nextInt(6);
 					int enimeID = rand.nextInt(4);
-					Enemie enemie = new Enemie(enimeID);
-					model.addNewEnemies(enimeID);
+				
+					Enemie enemie  = new Enemie(enimeID);;
+					enemie.addObserver(this);
+					
 					gameboard.add(enemie.getView(), 9, row);
 				}
-				
-				
+				enemiesSize += enemiesPerTimes;
+				enemiesPerTimes++;
 			}
-			System.out.println( model.getEnemy().get(0).getView().getX());
-		
-	
 	}
 	
 	private void sellTower(Tower tower) {
@@ -136,11 +145,12 @@ public class Controller {
 		tower.remove();
 	}
 	
-	private void placeTower(GridPane gameboard, int row, int col) {
+	private void placeTower(int row, int col) {
 		
 		Tower tower = model.addNewTower(settingTower, row, col);
 		
 		if (tower != null) {
+			tower.addObserver(this);
 			gameboard.add(tower.getView(), col, row);
 			
 			settingTower = 0;
@@ -149,7 +159,6 @@ public class Controller {
 			gameboard.add(tower.getMovement(), col, row);
 			
 			buying_status_label.setText("Not buying");
-			
 		}
 		
 	}
@@ -199,6 +208,24 @@ public class Controller {
 		}
 		
 		return pos;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		// enemy arrived home
+		if (o instanceof Enemie) {
+			((Enemie) o).remove();
+			enemiesSize--;
+			
+			int enemyID = Character.getNumericValue(arg.toString().charAt(0));
+			
+			model.setBlood(model.getBlood()-enemyID*10);
+			blood_label.setText("Blood: "+model.getBlood());
+			
+			if (enemiesSize == 2)
+				setUpEnemies();
+		}
 	}
 	
 	

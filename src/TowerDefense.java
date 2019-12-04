@@ -16,8 +16,6 @@ public class TowerDefense {
 		Model model = new Model();
 		Controller controller = new Controller(model);
 		
-		model.addObserver(view);
-		
 		return controller;
 	}
 
