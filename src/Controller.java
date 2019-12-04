@@ -1,3 +1,7 @@
+
+
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
@@ -9,6 +13,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class Controller {
 
@@ -36,7 +42,7 @@ public class Controller {
 			settingTower = tower;
 	}
 	
-	Image green = new Image("./images/green.png");
+	
 	public void addEventForGameBoard(GridPane gameboard) {
 		
 		gameboard.setOnMouseMoved(new EventHandler<MouseEvent>() {
@@ -46,7 +52,6 @@ public class Controller {
                 int mouseY = ((int) event.getY());
                 
                 if (settingTower != 0 && mouseX < 586 && mouseX > 0 && mouseY >=5 && mouseY <= 410) {
-            
                 	setPos(mouseX, mouseY);	
                 }
                 else
@@ -69,15 +74,30 @@ public class Controller {
 	}
 	
 	private void placeTower(GridPane gameboard, int row, int col) {
-		Image green = new Image("./images/tower"+settingTower+".png");
+		Image tower = new Image("./images/tower"+settingTower+".png");
 		
-		gameboard.add(new ImageView(green), col, row);
+		gameboard.add(new ImageView(tower), col, row);
 		
 		currency = model.subtractCurrency(settingTower);
 		setCurrencyLabel(currency_label);
 		
 		settingTower = 0;
 		newTowerPos = null;
+		
+		// tower attack visualization
+		Circle power = new Circle();
+		power.setFill(Color.RED);
+		power.setRadius(8);
+		
+		TranslateTransition movement = new TranslateTransition();
+		movement.setDuration(Duration.seconds(3));
+		movement.setToX(584);
+		movement.setCycleCount(Animation.INDEFINITE);
+		movement.setNode(power);
+		movement.play();
+		
+		gameboard.add(power, col, row);
+		
 	}
 	
 	
