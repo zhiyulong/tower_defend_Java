@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -41,17 +42,21 @@ public class Menu extends Application {
 
 	public void setUp() throws FileNotFoundException {
 		HBox hBox = new HBox();
-
+		FileInputStream in = new FileInputStream(
+				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/title.png");
+		Image title = new Image(in);
+		ImageView titleImageView = new ImageView(title);
 		VBox mainVBox = new VBox();
 		mainVBox.setSpacing(20);
 		Text welcomeText = new Text("Have fun, good luck!");
-		welcomeText.setFont(Font.font(50));
+		welcomeText.setFont(Font.font(40));
 		easyButton = new Button();
 		hardButton = new Button();
 		easyButton.setText("Easy model");
 		easyButton.setFont(Font.font(20));
 		hardButton.setText("Hard model");
 		hardButton.setFont(Font.font(20));
+		mainVBox.getChildren().add(titleImageView);
 		mainVBox.getChildren().add(welcomeText);
 		mainVBox.getChildren().add(easyButton);
 		mainVBox.getChildren().add(hardButton);
@@ -59,6 +64,7 @@ public class Menu extends Application {
 		hBox.setAlignment(Pos.CENTER);
 		mainVBox.setAlignment(Pos.CENTER);
 		borderPane.setCenter(hBox);
+		// need to change address
 		FileInputStream input = new FileInputStream(
 				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/menu.jpeg");
 
