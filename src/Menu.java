@@ -2,6 +2,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -32,15 +33,10 @@ public class Menu extends Application {
 		borderPane = new BorderPane();
 		Scene scene = new Scene(borderPane, 1000, 800);
 		setUp();
-		buttonEvent();
+		buttonEvent(primaryStage);
 		primaryStage.setTitle("Menu");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 	public void setUp() throws FileNotFoundException {
@@ -79,12 +75,26 @@ public class Menu extends Application {
 		borderPane.setBackground(background);
 	}
 
-	public void buttonEvent() {
+	public void buttonEvent(Stage stage) {
 		easyButton.setOnAction((ActionEvent e1) -> {
 			// load Easy model
+			Platform.runLater(new Runnable() {
+				public void run() {
+					try {
+						new View().start(new Stage());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			stage.hide();
+
 		});
-		hardButton.setOnAction((ActionEvent e1) -> {
+		hardButton.setOnAction((ActionEvent e2) -> {
 			// load Hard model
+
+//			stage.hide();
 		});
 	}
 
