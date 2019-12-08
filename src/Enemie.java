@@ -1,4 +1,5 @@
 import java.util.Observable;
+import java.util.Observer;
 
 import javax.sound.sampled.LineListener;
 
@@ -58,7 +59,9 @@ public class Enemie extends Observable{
 	public double getTransX() {
 		return 584 + image.getTranslateX();
 	}
-	
+	public void stop() {
+		movement.stop();
+	}
 	public void remove() {
 		blood = 0;
 		movement.stop();
@@ -88,5 +91,12 @@ public class Enemie extends Observable{
 	public void subBlood(int num) {
 		blood -= num;
 	}
+	public void start() {
+		movement.setToX(-584);
+		movement.setCycleCount(1);
+		movement.play();
+	}
+
+
 	
 }

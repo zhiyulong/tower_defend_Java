@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
@@ -37,7 +38,7 @@ public class Tower extends Observable{
 		this.col = col;
 		towerID = num;
 		image = new ImageView(new Image("./images/tower"+num+".png"));
-		
+
 		// tower attack visualization
 		movingPower = new Circle();
 		movingPower.setFill(powerColor[num-1]);
@@ -115,6 +116,14 @@ public class Tower extends Observable{
 		movement.stop();
 		image.setVisible(false);
 		movingPower.setVisible(false);
+	}
+
+	public void stop() {
+		movement.stop();
+		
+	}
+	public void start() {
+		movement.play();
 	}
 	
 }

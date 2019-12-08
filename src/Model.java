@@ -10,6 +10,11 @@ public class Model {
 	private ArrayList<ArrayList<Enemie>> targets;
 	
 	public Model() {
+		init();
+	}
+	
+	
+	public void init() {
 		currency = 15;
 		blood = 100;
 
@@ -27,10 +32,10 @@ public class Model {
 			ArrayList<Enemie> targetsPerRow = new ArrayList<Enemie>();
 			targets.add(targetsPerRow);
 		}
-
+		
 	}
-	
-	
+
+
 	public Tower removeTower(int row, int col) {
 		Tower tower = board.get(row).get(col);
 		if (tower != null)
@@ -108,6 +113,67 @@ public class Model {
 	
 	public void setBlood(double blood) {
 		this.blood = blood;
+	}
+
+
+	public void clear() {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {
+			
+					board.get(i).get(j).remove();
+				}
+		
+			}
+		}
+		for(int i=0; i<targets.size();i++) {
+			for(int j=0; j<targets.get(i).size();j++) {
+				if(targets.get(i).get(j)!=null) {
+					targets.get(i).get(j).remove();
+				}
+			}
+		}
+	}
+
+
+	public void stop() {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {
+			
+					board.get(i).get(j).stop();
+				}
+		
+			}
+		}
+		for(int i=0; i<targets.size();i++) {
+			for(int j=0; j<targets.get(i).size();j++) {
+				if(targets.get(i).get(j)!=null) {
+					targets.get(i).get(j).stop();
+				}
+			}
+		}
+	}
+
+
+	public void start() {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {
+			
+					board.get(i).get(j).start();
+				}
+		
+			}
+		}
+		for(int i=0; i<targets.size();i++) {
+			for(int j=0; j<targets.get(i).size();j++) {
+				if(targets.get(i).get(j)!=null) {
+					targets.get(i).get(j).start();
+				}
+			}
+		}
+		
 	}
 	
 	

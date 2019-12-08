@@ -13,6 +13,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -29,14 +32,22 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class View extends Application {
+public class View extends Application implements Observer {
 
 	private Controller controller;
 	
 	private BorderPane mainPane;
 	private GridPane gameboard;
 	
-	
+	public View() {
+		super();
+		initial();
+	}
+	public void initial() {
+		mainPane = new BorderPane();
+		gameboard = new GridPane();
+		controller = TowerDefense.setRelations(this);
+	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
@@ -46,9 +57,9 @@ public class View extends Application {
 		
 		// set MVC relation first
 		controller = TowerDefense.setRelations(this);
-		
+
 		// set up the game
-		setupGame();
+		setupGame(primaryStage);
 
 		
 		primaryStage.setTitle("Tower Defense");
@@ -59,29 +70,33 @@ public class View extends Application {
 	}
 
 
-	private void setupGame() {
+	private void setupGame(Stage primaryStage) {
 		
 		displayHome();
 		
-		setupMenu();
+		setupMenu(primaryStage);
 		
 		setupGameBoard();
 		
-		controller.setUpEnemies();
+		controller.setUpEnemies(this);
 		
 		
 	}
-	private class AnimationHandler implements EventHandler<ActionEvent>{
 
-		@Override
-		public void handle(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	private void setupMenu() {
+	private void setupMenu(Stage primaryStage) {
 		MenuBar menu = new MenuBar();
+		//button about new game, pause, fast.
+		GridPane mainMenu= new GridPane();
+
+		Button newgame= new Button("new game");
+		Button pause =new Button("Pause");
+		Button fast = new Button("Fast");
+		//Button start= new Button("Start");
+		
+		mainMenu.add(newgame, 0, 0);
+		mainMenu.add(pause, 0, 1);
+
+		mainMenu.add(fast, 0,2);
 		
 		// buy towers
 		Menu buyTowers = new Menu();
@@ -122,6 +137,20 @@ public class View extends Application {
 		menu.getMenus().add(blood);
 		
 		mainPane.setTop(menu);
+		mainPane.setRight(mainMenu);
+		
+		//behavior of new game, pause, fast;
+		newgame.setOnMouseClicked(e -> {
+			controller.clear();
+			
+		});
+		pause.setOnMouseClicked(e -> {
+			controller.stop();
+		});
+
+		fast.setOnMouseClicked(e -> {
+			
+		});
 	}
 	
 	
@@ -147,7 +176,7 @@ public class View extends Application {
 			gameboard.add(new ImageView(redland), 9, r);
 			
 		}
-		controller.addEventForGameBoard(gameboard);
+		controller.addEventForGameBoard(gameboard,this);
 		mainPane.setCenter(gameboard);
 	}
 	
@@ -156,6 +185,37 @@ public class View extends Application {
 		tower.setFitHeight(410);
 		tower.setFitWidth(100);
 		mainPane.setLeft(tower);
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		// enemy arrived home
+		
+
+		if (o instanceof Enemie) {
+			controller.arrived(o,arg);
+
+		}
+		
+		// enemy killed by tower
+		if (o instanceof Tower) {
+			controller.killed(o,arg);
+			
+		}
+		System.out.println(controller.getBlood()<0);
+		if(controller.getBlood()<0) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("You Lose!");
+			alert.show();
+			controller.stop();	
+			return;
+		}
+		if(controller.get_enemiesSize()==2) {
+			controller.setUpEnemies(this);
+		}
+
 	}
 	
 

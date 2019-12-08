@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -22,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Controller implements Observer{
+public class Controller extends Observable{
 
 	private Model model;
 
@@ -62,7 +63,7 @@ public class Controller implements Observer{
 	}
 	
 	
-	public void addEventForGameBoard(GridPane gameboard) {
+	public void addEventForGameBoard(GridPane gameboard, View view) {
 		
 		this.gameboard = gameboard;
 		
@@ -109,7 +110,7 @@ public class Controller implements Observer{
 						newTowerPos = null;
 					}
 					else
-						placeTower(newTowerPos[0], newTowerPos[1]);
+						placeTower(newTowerPos[0], newTowerPos[1],view);
 				}
 	        }
 
@@ -117,8 +118,8 @@ public class Controller implements Observer{
 		 });
 		 
 	}
-	
-	public void setUpEnemies() {
+
+	public void setUpEnemies(View view) {
 
 			if(model.getBlood() > 0) {
 				
@@ -128,17 +129,18 @@ public class Controller implements Observer{
 					int row = rand.nextInt(6);
 					int enimeID = rand.nextInt(4);
 				
-					Enemie enemie  = new Enemie(enimeID);;
-					enemie.addObserver(this);
+					Enemie enemie  = new Enemie(enimeID);
 					model.addTargets(row, enemie);
-					
+					enemie.addObserver(view);
 					gameboard.add(enemie.getView(), 9, row);
 				}
 				enemiesSize += enemiesPerTimes;
 				enemiesPerTimes++;
 			}
 	}
-	
+	public int get_enemiesSize() {
+		return enemiesSize;
+	}
 	private void sellTower(Tower tower) {
 		currency = model.addCurrency(tower.getID());
 		currency_label.setText("$ "+currency);
@@ -146,12 +148,12 @@ public class Controller implements Observer{
 		tower.remove();
 	}
 	
-	private void placeTower(int row, int col) {
+	private void placeTower(int row, int col, View view) {
 		
 		Tower tower = model.addNewTower(settingTower, row, col);
 		
 		if (tower != null) {
-			tower.addObserver(this);
+			tower.addObserver(view);
 			gameboard.add(tower.getView(), col, row);
 			
 			settingTower = 0;
@@ -211,31 +213,55 @@ public class Controller implements Observer{
 		return pos;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
+
+
+	public void arrived(Observable o, Object arg) {
+		int enemyID = Character.getNumericValue(arg.toString().charAt(0));
 		
-		// enemy arrived home
-		if (o instanceof Enemie) {
-			((Enemie) o).remove();
-			enemiesSize--;
-			
-			int enemyID = Character.getNumericValue(arg.toString().charAt(0));
-			
-			model.setBlood(model.getBlood()-enemyID*10);
-			blood_label.setText("Blood: "+model.getBlood());
-			
-			if (enemiesSize == 2)
-				setUpEnemies();
-		}
+		model.setBlood(model.getBlood()-enemyID*10);
+		blood_label.setText("Blood: "+model.getBlood());
 		
-		// enemy killed by tower
-		if (o instanceof Tower) {
-			enemiesSize--;
-			if (enemiesSize == 2)
-				setUpEnemies();
-		}
+		((Enemie) o).remove();
+		enemiesSize--;
+	
+		
+
+	}
+
+	public void killed(Observable o, Object arg) {
+		enemiesSize--;
+
+	}
+
+	public double getBlood() {
+		
+		return model.getBlood();
+	}
+
+	public void newgame() {
+		
+		model.init();
 		
 	}
+
+	public void clear() {
+		model.clear();
+		
+	}
+
+	public void stop() {
+		model.stop();
+	}
+
+	public void start() {
+		model.start();
+		
+	}
+
+
+
+
+
 	
 	
 }
