@@ -88,7 +88,7 @@ public class Controller extends Observable {
 					if (event.getButton() == MouseButton.SECONDARY) {
 						currency = model.addCurrency(settingTower);
 						currency_label.setText("$ " + currency);
-						;
+						
 						buying_status_label.setText("Not buying");
 
 						settingTower = 0;
