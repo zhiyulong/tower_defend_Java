@@ -41,8 +41,6 @@ public class Menu extends Application {
 
 	public void setUp() throws FileNotFoundException {
 		HBox hBox = new HBox();
-//		FileInputStream in = new FileInputStream(
-//				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/title.png");
 		Image title = new Image("./images/title.png");
 		ImageView titleImageView = new ImageView(title);
 		VBox mainVBox = new VBox();
@@ -63,9 +61,6 @@ public class Menu extends Application {
 		hBox.setAlignment(Pos.CENTER);
 		mainVBox.setAlignment(Pos.CENTER);
 		borderPane.setCenter(hBox);
-		// need to change address
-//		FileInputStream input = new FileInputStream(
-//				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/menu.jpeg");
 
 		// create a image
 		Image image = new Image("./images/menu.jpeg");
