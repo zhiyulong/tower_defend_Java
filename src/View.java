@@ -38,6 +38,7 @@ public class View extends Application implements Observer {
 	
 	private BorderPane mainPane;
 	private GridPane gameboard;
+	private Stage primaryStage;
 	
 	public View() {
 		super();
@@ -48,8 +49,11 @@ public class View extends Application implements Observer {
 		gameboard = new GridPane();
 		controller = TowerDefense.setRelations(this);
 	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		this.primaryStage = primaryStage;
 		
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
@@ -59,7 +63,7 @@ public class View extends Application implements Observer {
 		controller = TowerDefense.setRelations(this);
 
 		// set up the game
-		setupGame(primaryStage);
+		setupGame();
 
 		
 		primaryStage.setTitle("Tower Defense");
@@ -70,7 +74,7 @@ public class View extends Application implements Observer {
 	}
 
 
-	private void setupGame(Stage primaryStage) {
+	private void setupGame() {
 		
 		displayHome();
 		
@@ -141,7 +145,8 @@ public class View extends Application implements Observer {
 		
 		//behavior of new game, pause, fast;
 		newgame.setOnMouseClicked(e -> {
-			controller.clear();
+			
+			startNewGame();
 			
 		});
 		pause.setOnMouseClicked(e -> {
@@ -151,6 +156,11 @@ public class View extends Application implements Observer {
 		fast.setOnMouseClicked(e -> {
 			
 		});
+	}
+	
+	private void startNewGame() {
+		primaryStage.close();
+		
 	}
 	
 	

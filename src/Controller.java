@@ -244,10 +244,6 @@ public class Controller extends Observable{
 		
 	}
 
-	public void clear() {
-		model.clear();
-		
-	}
 
 	public void stop() {
 		model.stop();
@@ -257,11 +253,6 @@ public class Controller extends Observable{
 		model.start();
 		
 	}
-
-
-
-
-
 	
 	
 }
