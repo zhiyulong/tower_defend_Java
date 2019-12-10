@@ -1,4 +1,3 @@
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javafx.application.Application;
@@ -42,9 +41,9 @@ public class Menu extends Application {
 
 	public void setUp() throws FileNotFoundException {
 		HBox hBox = new HBox();
-		FileInputStream in = new FileInputStream(
-				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/title.png");
-		Image title = new Image(in);
+//		FileInputStream in = new FileInputStream(
+//				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/title.png");
+		Image title = new Image("./images/title.png");
 		ImageView titleImageView = new ImageView(title);
 		VBox mainVBox = new VBox();
 		mainVBox.setSpacing(20);
@@ -65,11 +64,11 @@ public class Menu extends Application {
 		mainVBox.setAlignment(Pos.CENTER);
 		borderPane.setCenter(hBox);
 		// need to change address
-		FileInputStream input = new FileInputStream(
-				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/menu.jpeg");
+//		FileInputStream input = new FileInputStream(
+//				"/Users/yunxiaohu/git/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang/src/images/menu.jpeg");
 
 		// create a image
-		Image image = new Image(input);
+		Image image = new Image("./images/menu.jpeg");
 
 		// create a background image
 		BackgroundImage backgroundimage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
@@ -105,3 +104,4 @@ public class Menu extends Application {
 	}
 
 }
+
