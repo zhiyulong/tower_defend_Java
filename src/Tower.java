@@ -23,12 +23,16 @@ public class Tower extends Observable {
 	private double[] powerSpeed = new double[] { 2.5, 2, 1.4, 1, 0.8, 0.4 };
 
 	private int col;
+	private int row;
 	private ArrayList<Enemie> targets;
 
 	private boolean removed;
+	private ChangeListener listener;
 
-	public Tower(int num, int col) {
+	public Tower(int num, int col, int row) {
 		this.col = col;
+		this.row = row;
+		
 		towerID = num;
 		image = new ImageView(new Image("./images/tower" + num + ".png"));
 
@@ -51,10 +55,10 @@ public class Tower extends Observable {
 	}
 
 	public void movementEvent() {
-
-		movingPower.translateXProperty().addListener(new ChangeListener() {
+		
+		listener = new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				if (!removed) {
 					for (Enemie target : targets) {
 						if (target.getBlood() > 0) {
@@ -62,15 +66,17 @@ public class Tower extends Observable {
 							int x = getCol(movingPower.getTranslateX()) + col;
 							if (targetX < 9 && x < 9 && targetX == x) {
 								target.remove();
-
+								
 								setChanged();
-								notifyObservers();
+								notifyObservers(target.getID());
 							}
 						}
 					}
 				}
 			}
-		});
+		};
+		
+		movingPower.translateXProperty().addListener(listener);
 
 	}
 
@@ -109,6 +115,7 @@ public class Tower extends Observable {
 		movement.stop();
 		image.setVisible(false);
 		movingPower.setVisible(false);
+		movingPower.translateXProperty().removeListener(listener);
 	}
 
 	public void stop() {
@@ -126,5 +133,9 @@ public class Tower extends Observable {
 	public void fast() {
 		movement.setRate(2);
 	}
-
+	
+	public int getRow() {
+		return row;
+	}
+	
 }

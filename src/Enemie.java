@@ -15,11 +15,14 @@ public class Enemie extends Observable {
 	private TranslateTransition movement;
 
 	private int blood;
+	private int row;
 
 	private int[] speed = new int[] { 40, 30, 20, 15 };
 	private int[] live = new int[] { 50, 70, 80, 100 };
 
-	public Enemie(int num) {
+	public Enemie(int num, int row) {
+		this.row = row;
+		
 		enemieID = num + 1;
 		blood = live[num];
 
@@ -97,6 +100,10 @@ public class Enemie extends Observable {
 	}
 	public void fast() {
 		movement.setRate(2);
+	}
+	
+	public int getRow() {
+		return row;
 	}
 
 

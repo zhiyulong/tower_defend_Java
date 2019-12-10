@@ -112,7 +112,7 @@ public class Controller extends Observable {
 				int row = rand.nextInt(6);
 				int enimeID = rand.nextInt(4);
 
-				Enemie enemie = new Enemie(enimeID);
+				Enemie enemie = new Enemie(enimeID, row);
 				model.addTargets(row, enemie);
 				enemie.addObserver(view);
 				gameboard.add(enemie.getView(), 9, row);
@@ -206,12 +206,15 @@ public class Controller extends Observable {
 
 		((Enemie) o).remove();
 		enemiesSize--;
-
+		
+		model.removeEnemy(((Enemie) o).getRow(), ((Enemie) o).getID());
 	}
 
 	public void killed(Observable o, Object arg) {
 		enemiesSize--;
-
+		
+		int ID = (int) arg;
+		model.removeEnemy(((Tower) o).getRow(), ID);
 	}
 
 	public double getBlood() {

@@ -228,8 +228,8 @@ public class View extends Application implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+		
 		// enemy arrived home
-
 		if (o instanceof Enemie) {
 			controller.arrived(o, arg);
 
@@ -240,7 +240,7 @@ public class View extends Application implements Observer {
 			controller.killed(o, arg);
 
 		}
-		System.out.println(controller.getBlood() < 0);
+		
 		if (controller.getBlood() < 0) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setContentText("You Lose!");

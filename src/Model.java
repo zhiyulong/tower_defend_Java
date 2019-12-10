@@ -33,6 +33,18 @@ public class Model {
 
 	}
 
+	public void removeEnemy(int row, int ID) {
+		
+		for (Enemie ene: targets.get(row)) {
+			if (ene.getID() == ID) {
+				targets.get(row).remove(ene);
+				break;
+			}
+		}
+		
+	}
+
+	
 	public Tower removeTower(int row, int col) {
 		Tower tower = board.get(row).get(col);
 		if (tower != null)
@@ -46,7 +58,7 @@ public class Model {
 		if (board.get(row).get(col) != null)
 			return null;
 
-		Tower tower = new Tower(towerID, col);
+		Tower tower = new Tower(towerID, col, row);
 		board.get(row).set(col, tower);
 
 		for (Enemie target : targets.get(row)) {
