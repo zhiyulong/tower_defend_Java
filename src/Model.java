@@ -108,7 +108,7 @@ public class Model {
 		this.blood = blood;
 	}
 
-	public void clear() {
+	public void newGame() {
 		for (int i = 0; i < board.size(); i++) {
 			for (int j = 0; j < board.get(i).size(); j++) {
 				if (board.get(i).get(j) != null) {
@@ -125,6 +125,7 @@ public class Model {
 				}
 			}
 		}
+
 	}
 
 	public void stop() {

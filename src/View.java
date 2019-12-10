@@ -2,6 +2,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -27,6 +28,7 @@ public class View extends Application implements Observer {
 
 	private BorderPane mainPane;
 	private GridPane gameboard;
+	private Stage primaryStage;
 
 	public View() {
 		super();
@@ -42,6 +44,8 @@ public class View extends Application implements Observer {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		this.primaryStage = primaryStage;
+
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
 		Scene scene = new Scene(mainPane);
@@ -50,7 +54,7 @@ public class View extends Application implements Observer {
 		controller = TowerDefense.setRelations(this);
 
 		// set up the game
-		setupGame(primaryStage);
+		setupGame();
 
 		primaryStage.setTitle("Tower Defense");
 		primaryStage.setScene(scene);
@@ -58,7 +62,7 @@ public class View extends Application implements Observer {
 
 	}
 
-	private void setupGame(Stage primaryStage) {
+	private void setupGame() {
 
 		displayHome();
 
@@ -77,13 +81,14 @@ public class View extends Application implements Observer {
 
 		Button newgame = new Button("new game");
 		Button pause = new Button("Pause");
+		Button start = new Button("Start");
 		Button fast = new Button("Fast");
 		// Button start= new Button("Start");
 
 		mainMenu.add(newgame, 0, 0);
 		mainMenu.add(pause, 0, 1);
-
-		mainMenu.add(fast, 0, 2);
+		mainMenu.add(start, 0, 2);
+		mainMenu.add(fast, 0, 3);
 
 		// buy towers
 		Menu buyTowers = new Menu();
@@ -126,16 +131,34 @@ public class View extends Application implements Observer {
 
 		// behavior of new game, pause, fast;
 		newgame.setOnMouseClicked(e -> {
-			controller.clear();
+
+			startNewGame();
 
 		});
 		pause.setOnMouseClicked(e -> {
 			controller.stop();
 		});
-
+		start.setOnMouseClicked(e -> {
+			controller.start();
+		});
 		fast.setOnMouseClicked(e -> {
 
 		});
+	}
+
+	private void startNewGame() {
+		primaryStage.close();
+
+		// reload
+		Platform.runLater(() -> {
+			try {
+				start(new Stage());
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+		});
+
 	}
 
 	private void setupGameBoard() {

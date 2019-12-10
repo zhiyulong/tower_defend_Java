@@ -1,4 +1,3 @@
-
 import java.util.Observable;
 import java.util.Random;
 
@@ -222,11 +221,6 @@ public class Controller extends Observable {
 	public void newgame() {
 
 		model.init();
-
-	}
-
-	public void clear() {
-		model.clear();
 
 	}
 

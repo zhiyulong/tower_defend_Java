@@ -112,7 +112,7 @@ public class Tower extends Observable {
 	}
 
 	public void stop() {
-		movement.stop();
+		movement.pause();
 
 	}
 

@@ -54,7 +54,7 @@ public class Enemie extends Observable {
 	}
 
 	public void stop() {
-		movement.stop();
+		movement.pause();
 	}
 
 	public void remove() {
