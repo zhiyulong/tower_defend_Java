@@ -8,6 +8,7 @@ import java.util.Observer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -163,6 +164,16 @@ public class View extends Application implements Observer {
 	
 	private void startNewGame() {
 		primaryStage.close();
+		
+		// reload
+	    Platform.runLater( () -> {
+			try {
+				start( new Stage() );
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		} );
 		
 	}
 	
