@@ -32,19 +32,16 @@ public class View extends Application implements Observer {
 	private Stage gameStage;
 	
 	private Stage menu;
+	
+	private String mode;
 
-	public View(Stage menu) {
+	public View(Stage menu, String mode) {
 		super();
-		initial();
 		
 		this.menu = menu;
+		this.mode = mode;
 	}
 
-	public void initial() {
-		mainPane = new BorderPane();
-		gameboard = new GridPane();
-		controller = TowerDefense.setRelations(this);
-	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

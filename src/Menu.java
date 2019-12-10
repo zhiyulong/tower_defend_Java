@@ -90,7 +90,7 @@ public class Menu extends Application {
 			Platform.runLater(new Runnable() {
 				public void run() {
 					try {
-						new View(stage).start(new Stage());
+						new View(stage, "easy").start(new Stage());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
