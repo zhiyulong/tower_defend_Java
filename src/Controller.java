@@ -42,7 +42,7 @@ public class Controller extends Observable {
 
 			currency = model.subtractCurrency(settingTower);
 			currency_label.setText("$ " + currency);
-			;
+			
 
 			buying_status_label.setText("Placing #" + tower);
 		}
@@ -215,6 +215,7 @@ public class Controller extends Observable {
 		
 		int ID = (int) arg;
 		model.removeEnemy(((Tower) o).getRow(), ID);
+		
 	}
 
 	public double getBlood() {

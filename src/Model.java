@@ -35,6 +35,7 @@ public class Model {
 
 	public void removeEnemy(int row, int ID) {
 		
+		
 		for (Enemie ene: targets.get(row)) {
 			if (ene.getID() == ID) {
 				targets.get(row).remove(ene);
@@ -42,7 +43,15 @@ public class Model {
 			}
 		}
 		
+		
+//		for (Tower tower: board.get(row)) {
+//			if (tower != null)
+//				tower.delectTarget(ID);
+//		}
+		
 	}
+	
+	
 
 	
 	public Tower removeTower(int row, int col) {
@@ -72,9 +81,14 @@ public class Model {
 	public void addTargets(int row, Enemie ene) {
 		targets.get(row).add(ene);
 		
-		
+		for (Tower tower: board.get(row)) {
+			if (tower != null) {
+				tower.addTarget(ene);
+			}
+		}
 		
 	}
+	
 
 	/**
 	 * Adds currency to the player's balance.

@@ -139,4 +139,15 @@ public class Tower extends Observable {
 		return row;
 	}
 	
+	public void delectTarget(int ID) {
+		
+		for (Enemie ene: targets) {
+			if (ene.getID() == ID) {
+				targets.remove(ene);
+				break;
+			}
+		}
+		
+	}
+	
 }
