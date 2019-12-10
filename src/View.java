@@ -19,6 +19,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -28,11 +29,15 @@ public class View extends Application implements Observer {
 
 	private BorderPane mainPane;
 	private GridPane gameboard;
-	private Stage primaryStage;
+	private Stage gameStage;
+	
+	private Stage menu;
 
-	public View() {
+	public View(Stage menu) {
 		super();
 		initial();
+		
+		this.menu = menu;
 	}
 
 	public void initial() {
@@ -44,7 +49,7 @@ public class View extends Application implements Observer {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		this.primaryStage = primaryStage;
+		this.gameStage = primaryStage;
 
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
@@ -66,7 +71,7 @@ public class View extends Application implements Observer {
 
 		displayHome();
 
-		setupMenu(primaryStage);
+		setupMenu(gameStage);
 
 		setupGameBoard();
 
@@ -78,19 +83,25 @@ public class View extends Application implements Observer {
 		MenuBar menu = new MenuBar();
 		// button about new game, pause, fast.
 		GridPane mainMenu = new GridPane();
+		mainMenu.setVgap(20);
 
-		Button newgame = new Button("new game");
+		Button backToMenu = new Button("Back to Menu");
+		Button newgame = new Button("Restart");
+		
+		VBox stopBegin = new VBox();
 		Button pause = new Button("Pause");
 		Button start = new Button("Start");
+		stopBegin.getChildren().addAll(pause, start);
+		
+		VBox speed = new VBox();
 		Button fast = new Button("Fast");
-
 		Button normal= new Button("Normal");
-
-		mainMenu.add(newgame, 0, 0);
-		mainMenu.add(pause, 0, 1);
-		mainMenu.add(start, 0, 2);
-		mainMenu.add(fast, 0,3);
-		mainMenu.add(normal, 0, 4);
+		speed.getChildren().addAll(fast, normal);
+		
+		mainMenu.add(backToMenu, 0, 0);
+		mainMenu.add(newgame, 0, 1);
+		mainMenu.add(stopBegin, 0, 2);
+		mainMenu.add(speed, 0, 3);
 
 		// buy towers
 		Menu buyTowers = new Menu();
@@ -132,10 +143,12 @@ public class View extends Application implements Observer {
 		mainPane.setRight(mainMenu);
 
 		// behavior of new game, pause, fast;
+		backToMenu.setOnMouseClicked(e -> {
+			backToMenu();
+
+		});
 		newgame.setOnMouseClicked(e -> {
-
 			startNewGame();
-
 		});
 		pause.setOnMouseClicked(e -> {
 			controller.exec(pause.getText());
@@ -153,8 +166,19 @@ public class View extends Application implements Observer {
 		});
 	}
 
+	private void backToMenu() {
+		gameStage.close();
+		
+		Platform.runLater(new Runnable() {
+			public void run() {
+				menu.show();
+			}
+		});
+		
+	}
+
 	private void startNewGame() {
-		primaryStage.close();
+		gameStage.close();
 
 		// reload
 		Platform.runLater(() -> {

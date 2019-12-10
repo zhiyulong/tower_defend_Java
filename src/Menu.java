@@ -25,6 +25,10 @@ public class Menu extends Application {
 	private BorderPane borderPane;
 	private Button easyButton;
 	private Button hardButton;
+	
+	public Menu() {
+		super();
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -86,7 +90,7 @@ public class Menu extends Application {
 			Platform.runLater(new Runnable() {
 				public void run() {
 					try {
-						new View().start(new Stage());
+						new View(stage).start(new Stage());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
