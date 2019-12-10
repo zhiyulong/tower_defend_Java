@@ -3,11 +3,6 @@ import java.util.Observer;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-<<<<<<< HEAD
-=======
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -34,7 +29,6 @@ public class View extends Application implements Observer {
 	private BorderPane mainPane;
 	private GridPane gameboard;
 	private Stage primaryStage;
-<<<<<<< HEAD
 
 	public View() {
 		super();
@@ -47,30 +41,11 @@ public class View extends Application implements Observer {
 		controller = TowerDefense.setRelations(this);
 	}
 
-=======
-	
-	public View() {
-		super();
-		initial();
-	}
-	public void initial() {
-		mainPane = new BorderPane();
-		gameboard = new GridPane();
-		controller = TowerDefense.setRelations(this);
-	}
-	
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-<<<<<<< HEAD
 
 		this.primaryStage = primaryStage;
 
-=======
-		
-		this.primaryStage = primaryStage;
-		
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
 		Scene scene = new Scene(mainPane);
@@ -88,22 +63,7 @@ public class View extends Application implements Observer {
 	}
 
 	private void setupGame() {
-<<<<<<< HEAD
-=======
-		
-		displayHome();
-		
-		setupMenu(primaryStage);
-		
-		setupGameBoard();
-		
-		controller.setUpEnemies(this);
-		
-		
-	}
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 
-<<<<<<< HEAD
 		displayHome();
 
 		setupMenu(primaryStage);
@@ -114,11 +74,8 @@ public class View extends Application implements Observer {
 
 	}
 
-=======
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	private void setupMenu(Stage primaryStage) {
 		MenuBar menu = new MenuBar();
-<<<<<<< HEAD
 		// button about new game, pause, fast.
 		GridPane mainMenu = new GridPane();
 
@@ -133,22 +90,6 @@ public class View extends Application implements Observer {
 		mainMenu.add(start, 0, 2);
 		mainMenu.add(fast, 0, 3);
 
-=======
-		//button about new game, pause, fast.
-		GridPane mainMenu= new GridPane();
-
-		Button newgame= new Button("new game");
-		Button pause =new Button("Pause");
-		Button start = new Button("Start");
-		Button fast = new Button("Fast");
-		//Button start= new Button("Start");
-		
-		mainMenu.add(newgame, 0, 0);
-		mainMenu.add(pause, 0, 1);
-		mainMenu.add(start, 0, 2);
-		mainMenu.add(fast, 0,3);
-		
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 		// buy towers
 		Menu buyTowers = new Menu();
 		buyTowers.setText("Buy Towers");
@@ -187,7 +128,6 @@ public class View extends Application implements Observer {
 
 		mainPane.setTop(menu);
 		mainPane.setRight(mainMenu);
-<<<<<<< HEAD
 
 		// behavior of new game, pause, fast;
 		newgame.setOnMouseClicked(e -> {
@@ -204,39 +144,6 @@ public class View extends Application implements Observer {
 		fast.setOnMouseClicked(e -> {
 
 		});
-=======
-		
-		//behavior of new game, pause, fast;
-		newgame.setOnMouseClicked(e -> {
-			
-			startNewGame();
-			
-		});
-		pause.setOnMouseClicked(e -> {
-			controller.stop();
-		});
-		start.setOnMouseClicked(e -> {
-			controller.start();
-		});
-		fast.setOnMouseClicked(e -> {
-			
-		});
-	}
-	
-	private void startNewGame() {
-		primaryStage.close();
-		
-		// reload
-	    Platform.runLater( () -> {
-			try {
-				start( new Stage() );
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-		} );
-		
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	}
 
 	private void startNewGame() {
@@ -275,11 +182,7 @@ public class View extends Application implements Observer {
 			gameboard.add(new ImageView(redland), 9, r);
 
 		}
-<<<<<<< HEAD
 		controller.addEventForGameBoard(gameboard, this);
-=======
-		controller.addEventForGameBoard(gameboard,this);
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 		mainPane.setCenter(gameboard);
 	}
 
@@ -289,41 +192,6 @@ public class View extends Application implements Observer {
 		tower.setFitWidth(100);
 		mainPane.setLeft(tower);
 	}
-<<<<<<< HEAD
-=======
-
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		// enemy arrived home
-		
-
-		if (o instanceof Enemie) {
-			controller.arrived(o,arg);
-
-		}
-		
-		// enemy killed by tower
-		if (o instanceof Tower) {
-			controller.killed(o,arg);
-			
-		}
-		System.out.println(controller.getBlood()<0);
-		if(controller.getBlood()<0) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setContentText("You Lose!");
-			alert.show();
-			controller.stop();	
-			return;
-		}
-		if(controller.get_enemiesSize()==2) {
-			controller.setUpEnemies(this);
-		}
-
-	}
-	
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 
 	@Override
 	public void update(Observable o, Object arg) {
