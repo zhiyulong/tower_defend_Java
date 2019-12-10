@@ -147,7 +147,6 @@ public class View extends Application implements Observer {
 		
 		//behavior of new game, pause, fast;
 		newgame.setOnMouseClicked(e -> {
-			
 			startNewGame();
 			
 		});
@@ -211,6 +210,7 @@ public class View extends Application implements Observer {
 		mainPane.setLeft(tower);
 	}
 
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -233,10 +233,10 @@ public class View extends Application implements Observer {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setContentText("You Lose!");
 			alert.show();
-			controller.stop();	
+			controller.removeAll();	
 			return;
 		}
-		if(controller.get_enemiesSize()==2) {
+		if(controller.get_enemiesSize() <= 2) {
 			controller.setUpEnemies(this);
 		}
 

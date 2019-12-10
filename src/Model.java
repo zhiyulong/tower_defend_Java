@@ -116,7 +116,7 @@ public class Model {
 	}
 
 
-	public void newGame() {
+	public void removeAll() {
 		for(int i=0; i<board.size();i++) {
 			for(int j=0; j<board.get(i).size();j++) {
 				if(board.get(i).get(j)!=null) {
