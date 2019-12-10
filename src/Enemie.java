@@ -1,4 +1,5 @@
 import java.util.Observable;
+import java.util.Observer;
 
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -52,11 +53,17 @@ public class Enemie extends Observable {
 	public double getTransX() {
 		return 584 + image.getTranslateX();
 	}
+<<<<<<< HEAD
 
 	public void stop() {
 		movement.pause();
 	}
 
+=======
+	public void stop() {
+		movement.pause();
+	}
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	public void remove() {
 		blood = 0;
 		movement.stop();
@@ -86,6 +93,7 @@ public class Enemie extends Observable {
 	public void subBlood(int num) {
 		blood -= num;
 	}
+<<<<<<< HEAD
 
 	public void start() {
 		movement.setToX(-584);
@@ -94,3 +102,14 @@ public class Enemie extends Observable {
 	}
 
 }
+=======
+	public void start() {
+		movement.setToX(-584);
+		movement.setCycleCount(1);
+		movement.play();
+	}
+
+
+	
+}
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git

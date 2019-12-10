@@ -1,13 +1,23 @@
 import java.util.Observable;
 import java.util.Random;
 
+<<<<<<< HEAD
+=======
+
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+<<<<<<< HEAD
 public class Controller extends Observable {
+=======
+public class Controller extends Observable{
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 
 	private Model model;
 
@@ -46,6 +56,28 @@ public class Controller extends Observable {
 			buying_status_label.setText("Placing #" + tower);
 		}
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	public void addEventForGameBoard(GridPane gameboard, View view) {
+		
+		this.gameboard = gameboard;
+		
+		gameboard.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override 
+            public void handle(MouseEvent event) {
+                int mouseX = ((int) event.getX());
+                int mouseY = ((int) event.getY());
+                
+                if (settingTower != 0 && mouseX < 586 && mouseX > 0 && mouseY >=5 && mouseY <= 410) {
+                	setPos(mouseX, mouseY);	
+                }
+                else
+                	newTowerPos = null;
+                
+            }
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 
 	public void addEventForGameBoard(GridPane gameboard, View view) {
 
@@ -92,14 +124,48 @@ public class Controller extends Observable {
 
 						settingTower = 0;
 						newTowerPos = null;
+<<<<<<< HEAD
 					} else
 						placeTower(newTowerPos[0], newTowerPos[1], view);
+=======
+					}
+					else
+						placeTower(newTowerPos[0], newTowerPos[1],view);
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 				}
+<<<<<<< HEAD
+=======
+	        }
+
+			
+		 });
+		 
+	}
+
+	public void setUpEnemies(View view) {
+
+			if(model.getBlood() > 0) {
+				
+				Random rand=new Random();
+				for (int i=0; i<enemiesPerTimes; i++) {
+					
+					int row = rand.nextInt(6);
+					int enimeID = rand.nextInt(4);
+				
+					Enemie enemie  = new Enemie(enimeID);
+					model.addTargets(row, enemie);
+					enemie.addObserver(view);
+					gameboard.add(enemie.getView(), 9, row);
+				}
+				enemiesSize += enemiesPerTimes;
+				enemiesPerTimes++;
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 			}
 
 		});
 
 	}
+<<<<<<< HEAD
 
 	public void setUpEnemies(View view) {
 
@@ -125,15 +191,26 @@ public class Controller extends Observable {
 		return enemiesSize;
 	}
 
+=======
+	public int get_enemiesSize() {
+		return enemiesSize;
+	}
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	private void sellTower(Tower tower) {
 		currency = model.addCurrency(tower.getID());
 		currency_label.setText("$ " + currency);
 
 		tower.remove();
 	}
+<<<<<<< HEAD
 
 	private void placeTower(int row, int col, View view) {
 
+=======
+	
+	private void placeTower(int row, int col, View view) {
+		
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 		Tower tower = model.addNewTower(settingTower, row, col);
 
 		if (tower != null) {
@@ -197,6 +274,7 @@ public class Controller extends Observable {
 		return pos;
 	}
 
+<<<<<<< HEAD
 	public void arrived(Observable o, Object arg) {
 		int enemyID = Character.getNumericValue(arg.toString().charAt(0));
 
@@ -206,6 +284,47 @@ public class Controller extends Observable {
 		((Enemie) o).remove();
 		enemiesSize--;
 
+=======
+
+
+	public void arrived(Observable o, Object arg) {
+		int enemyID = Character.getNumericValue(arg.toString().charAt(0));
+		
+		model.setBlood(model.getBlood()-enemyID*10);
+		blood_label.setText("Blood: "+model.getBlood());
+		
+		((Enemie) o).remove();
+		enemiesSize--;
+	
+		
+
+	}
+
+	public void killed(Observable o, Object arg) {
+		enemiesSize--;
+
+	}
+
+	public double getBlood() {
+		
+		return model.getBlood();
+	}
+
+	public void newgame() {
+		
+		model.init();
+		
+	}
+
+
+	public void stop() {
+		model.stop();
+	}
+
+	public void start() {
+		model.start();
+		
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 	}
 
 	public void killed(Observable o, Object arg) {
