@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
@@ -31,11 +30,7 @@ public class Tower extends Observable {
 	public Tower(int num, int col) {
 		this.col = col;
 		towerID = num;
-<<<<<<< HEAD
 		image = new ImageView(new Image("./images/tower" + num + ".png"));
-=======
-		image = new ImageView(new Image("./images/tower"+num+".png"));
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
 
 		// tower attack visualization
 		movingPower = new Circle();
@@ -118,7 +113,6 @@ public class Tower extends Observable {
 
 	public void stop() {
 		movement.pause();
-<<<<<<< HEAD
 
 	}
 
@@ -127,12 +121,3 @@ public class Tower extends Observable {
 	}
 
 }
-=======
-		
-	}
-	public void start() {
-		movement.play();
-	}
-	
-}
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-markhardy-zhiyulong-donshawhu-jiaxukang.git
