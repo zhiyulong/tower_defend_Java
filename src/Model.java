@@ -65,11 +65,15 @@ public class Model {
 			if (target.getBlood() > 0)
 				tower.addTarget(target);
 		}
+		
 		return tower;
 	}
 
 	public void addTargets(int row, Enemie ene) {
 		targets.get(row).add(ene);
+		
+		
+		
 	}
 
 	/**

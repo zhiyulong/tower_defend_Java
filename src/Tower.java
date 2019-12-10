@@ -96,6 +96,7 @@ public class Tower extends Observable {
 	public void addTarget(Enemie ene) {
 		targets.add(ene);
 	}
+	
 
 	public int getID() {
 		return towerID;
