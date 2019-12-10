@@ -219,6 +219,7 @@ public class Controller extends Observable {
 		return model.getBlood();
 	}
 
+
 	public void newgame() {
 
 		model.init();
@@ -229,12 +230,10 @@ public class Controller extends Observable {
 		
 	}
 
-	public void stop() {
-		model.stop();
-	}
 
-	public void start() {
-		model.start();
+
+	public void exec(String text) {
+		model.exec(text);
 
 	}
 

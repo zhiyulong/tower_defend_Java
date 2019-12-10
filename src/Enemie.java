@@ -88,9 +88,16 @@ public class Enemie extends Observable {
 	}
 
 	public void start() {
-		movement.setToX(-584);
-		movement.setCycleCount(1);
+
 		movement.play();
 	}
+
+	public void normal() {
+		movement.setRate(1);
+	}
+	public void fast() {
+		movement.setRate(2);
+	}
+
 
 }

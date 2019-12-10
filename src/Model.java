@@ -148,20 +148,47 @@ public class Model {
 		}
 	}
 
-	public void start() {
-		for (int i = 0; i < board.size(); i++) {
-			for (int j = 0; j < board.get(i).size(); j++) {
-				if (board.get(i).get(j) != null) {
 
-					board.get(i).get(j).start();
+
+
+	public void exec(String text) {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {
+					if(text.equals("Start")) {
+						board.get(i).get(j).start();
+					}
+					if(text.equals("Pause")) {
+						board.get(i).get(j).stop();
+					}					
+					if(text.equals("Fast")) {
+						board.get(i).get(j).fast();
+					}					
+					if(text.equals("Normal")) {
+						board.get(i).get(j).normal();
+					}
+
 				}
 
 			}
 		}
-		for (int i = 0; i < targets.size(); i++) {
-			for (int j = 0; j < targets.get(i).size(); j++) {
-				if (targets.get(i).get(j) != null) {
-					targets.get(i).get(j).start();
+
+		for(int i=0; i<targets.size();i++) {
+			for(int j=0; j<targets.get(i).size();j++) {
+				if(targets.get(i).get(j)!=null) {
+					if(text.equals("Start")) {
+						targets.get(i).get(j).start();
+					}
+					if(text.equals("Pause")) {
+						targets.get(i).get(j).stop();
+					}					
+					if(text.equals("Fast")) {
+						targets.get(i).get(j).fast();
+					}					
+					if(text.equals("Normal")) {
+						targets.get(i).get(j).normal();
+					}
+
 				}
 			}
 		}
