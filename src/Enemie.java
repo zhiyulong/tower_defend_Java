@@ -60,7 +60,7 @@ public class Enemie extends Observable{
 		return 584 + image.getTranslateX();
 	}
 	public void stop() {
-		movement.stop();
+		movement.pause();
 	}
 	public void remove() {
 		blood = 0;

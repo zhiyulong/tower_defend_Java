@@ -94,13 +94,14 @@ public class View extends Application implements Observer {
 
 		Button newgame= new Button("new game");
 		Button pause =new Button("Pause");
+		Button start = new Button("Start");
 		Button fast = new Button("Fast");
 		//Button start= new Button("Start");
 		
 		mainMenu.add(newgame, 0, 0);
 		mainMenu.add(pause, 0, 1);
-
-		mainMenu.add(fast, 0,2);
+		mainMenu.add(start, 0, 2);
+		mainMenu.add(fast, 0,3);
 		
 		// buy towers
 		Menu buyTowers = new Menu();
@@ -152,7 +153,9 @@ public class View extends Application implements Observer {
 		pause.setOnMouseClicked(e -> {
 			controller.stop();
 		});
-
+		start.setOnMouseClicked(e -> {
+			controller.start();
+		});
 		fast.setOnMouseClicked(e -> {
 			
 		});
