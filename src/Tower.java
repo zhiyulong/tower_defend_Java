@@ -125,5 +125,10 @@ public class Tower extends Observable{
 	public void start() {
 		movement.play();
 	}
-	
+	public void normal() {
+		movement.setRate(1);
+	}
+	public void fast() {
+		movement.setRate(2);
+	}
 }
