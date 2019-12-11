@@ -33,6 +33,13 @@ public class Tower extends Observable {
 
 	private ChangeListener listener;
 
+	/**
+	 * Constructor for Tower object
+	 * 
+	 * @param num	int of the id of the Tower's style
+	 * @param col	int of the col the Tower should occupy
+	 * @param row	int of the row the Tower should occupy
+	 */
 	public Tower(int num, int col, int row) {
 		powerSpeed = new double[] { 5, 3, 2, 1.5, 1, 0.6 };
 		powerColor = new Color[] { Color.RED, Color.BLUE, Color.DEEPPINK, Color.YELLOW, 
@@ -62,6 +69,9 @@ public class Tower extends Observable {
 
 	}
 
+	/**
+	 * Animation for the Tower firing and being destroyed
+	 */
 	public void movementEvent() {
 		
 		listener = new ChangeListener<Object>() {
@@ -101,6 +111,13 @@ public class Tower extends Observable {
 
 	}
 
+	/**
+	 * Getter for the horizontal position of the Tower relative to the board
+	 * 
+	 * @param x	double of the Tower's position.
+	 * 
+	 * @return	int of the column the Tower occupies on the board.
+	 */
 	private int getCol(double x) {
 		int col = 0;
 
@@ -114,51 +131,95 @@ public class Tower extends Observable {
 		return col;
 	}
 
+	/**
+	 * Changes the Tower's target to new enemies.
+	 * 
+	 * @param targets	ArrayList holding Enemie objects that are to be 
+	 * 					targeted.
+	 */
 	public void setTarget(ArrayList<Enemie> targets) {
 		this.targets = targets;
 	}
 	
+	/**
+	 * Adds a single target to the Tower's list of targets.
+	 * 
+	 * @param ene	Enemie object to be targeted.
+	 */
 	public void addTarget(Enemie ene) {
 		targets.add(ene);
 	}
 
+	/**
+	 * Getter for the id representing the type of Tower.
+	 * 
+	 * @return	int representing the type of Tower.
+	 */
 	public int getID() {
 		return towerID;
 	}
 
+	/**
+	 * Getter for the ImageView of the Tower.
+	 * 
+	 * @return	ImageView which holds the image representing the Tower.
+	 */
 	public ImageView getView() {
 		return image;
 	}
 
+	/**
+	 * Getter for the Tower's bullets.
+	 * 
+	 * @return	Circle representing the Tower's bullets.
+	 */
 	public Circle getMovement() {
 		return movingPower;
 	}
 
+	/**
+	 * Disables and removes a Tower from the board.
+	 */
 	public void remove() {
-
 		movement.stop();
 		image.setVisible(false);
 		movingPower.setVisible(false);
 		movingPower.translateXProperty().removeListener(listener);
 	}
 
+	/**
+	 * Causes the Tower to stop attacking.
+	 */
 	public void stop() {
 		movement.pause();
-
 	}
 
+	/**
+	 * Causes the Tower to start attacking.
+	 */
 	public void start() {
 		movement.play();
 	}
 
+	/**
+	 * Sets the Tower's firing speed to its x1 rate.
+	 */
 	public void normal() {
 		movement.setRate(1);
 	}
 	
+	/**
+	 * Sets the Tower's firing speed to its x5 rate.
+	 */
 	public void fast() {
 		movement.setRate(5);
 	}
 	
+	/**
+	 * Getter for the Tower's vertical position on the board.
+	 * 
+	 * @return	int representing the Tower's row on the board.
+	 */
 	public int getRow() {
 		return row;
 	}

@@ -56,6 +56,12 @@ public class View extends Application implements Observer {
 	private boolean nonChangableMode;
 	private boolean lose;
 	
+	/**
+	 * Constructor for the View object governing what the player sees.
+	 * 
+	 * @param menu	menu that is being displayed.
+	 * @param mode	The mode the player has selected.
+	 */
 	public View(Stage menu, String mode) {
 		super();
 		
@@ -90,6 +96,9 @@ public class View extends Application implements Observer {
 		}
 	}
 	
+	/**
+	 * Starts up the game in the View.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.gameStage = primaryStage;
@@ -107,6 +116,9 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Helper method to manage setting up the game to be displayed.
+	 */
 	private void setupGame() {
 		displayHome();
 		
@@ -118,6 +130,9 @@ public class View extends Application implements Observer {
 		addEnemies();
 	}
 	
+	/**
+	 * Helper method to set up the game board to be displayed.
+	 */
 	private void setupGameBoard() {
 		gameboard.setVgap(4);
 		gameboard.setHgap(1);
@@ -144,6 +159,9 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Adds enemies to the board in order to start the game.
+	 */
 	private void addEnemies() {
 		if (controller.getBlood() > 0) {
 			Random rand = new Random();
@@ -163,7 +181,12 @@ public class View extends Application implements Observer {
 		}
 	}
 	
-	
+	/**
+	 * Adds Enemie objects to the list of valid targets for a specific row.
+	 * 
+	 * @param row	row to add targets to.
+	 * @param ene	Enemie object to become a valid target for the row.
+	 */
 	public synchronized void addTargets(int row, Enemie ene) {
 		targets.get(row).add(ene);
 		
@@ -175,10 +198,15 @@ public class View extends Application implements Observer {
 		
 	}
 	
-	
+	/**
+	 * Handles mouse events for the game.
+	 */
 	private void addEventForGameBoard() {
 		
 		gameboard.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			/**
+			 * Handles mouse movement.
+			 */
 			@Override
 			public void handle(MouseEvent event) {
 				int mouseX = ((int) event.getX());
@@ -190,6 +218,9 @@ public class View extends Application implements Observer {
 		});
 		
 		gameboard.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			/**
+			 * Handles mouse clicks.
+			 */
 			@Override
 			public void handle(MouseEvent event) {
 
@@ -221,6 +252,9 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Places a Tower on the View.
+	 */
 	private void placeTower() {
 		int id = controller.addTower();
 		
@@ -243,6 +277,11 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Sells a Tower object at the specified coordinates of the board.
+	 * @param row	row coordinate of the Tower to be sold.
+	 * @param col	col coordinate of the Tower to be sold.
+	 */
 	private void sellTower(int row, int col) {
 		currency_label.setText("$ " + controller.getCurrency());
 		
@@ -254,6 +293,9 @@ public class View extends Application implements Observer {
 		
 	}
 
+	/**
+	 * Displays controls for the game to the player.
+	 */
 	private void setupLeftSideMenu() {
 
 		// button about new game, pause, fast.
@@ -315,6 +357,11 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Handles incoming commands from the player and changes the board
+	 * accordingly.
+	 * @param text	command to be executed.
+	 */
 	public void exec(String text) {
 		for(int i=0; i<board.size();i++) {
 			for(int j=0; j<board.get(i).size();j++) {
@@ -359,6 +406,9 @@ public class View extends Application implements Observer {
 
 	}
 
+	/**
+	 * Pauses the game and displays the game's main menu.
+	 */
 	private synchronized void backToMenu() {
 		exec("Pause");
 		gameStage.hide();
@@ -400,6 +450,9 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Ends the current game and begins a new one.
+	 */
 	private synchronized void startNewGame() {
 		gameStage.close();
 
@@ -415,6 +468,9 @@ public class View extends Application implements Observer {
 
 	}
 
+	/**
+	 * Displays a menu of in-game controls.
+	 */
 	private void setupUppSideMenu() {
 		MenuBar menu = new MenuBar();
 		
@@ -462,7 +518,10 @@ public class View extends Application implements Observer {
 		mainPane.setTop(menu);
 	}
 	
-
+	/**
+	 * Displays the back (left-most) column that represents the end of where
+	 * enemies are trying to reach.
+	 */
 	private void displayHome() {
 		ImageView tower = new ImageView(new Image("./images/TOWER.png"));
 		tower.setFitHeight(410);
@@ -470,6 +529,9 @@ public class View extends Application implements Observer {
 		mainPane.setLeft(tower);
 	}
 
+	/**
+	 * Updates the observer on changes in the game.
+	 */
 	@Override
 	public synchronized void update(Observable o, Object arg) {
 
@@ -514,6 +576,12 @@ public class View extends Application implements Observer {
 		
 	}
 	
+	/**
+	 * Removes an enemy from the game.
+	 * 
+	 * @param row	row that the enemy is currently in.
+	 * @param id	id of the Tower that is attacking the enemy.
+	 */
 	private void removeEnemy(int row, int id) {
 		Enemie ene = null;
 		for (Enemie target: targets.get(row)) {

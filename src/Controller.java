@@ -1,5 +1,6 @@
 public class Controller {
 
+	
 	private Model model;
 	
 	private int settingTower;
