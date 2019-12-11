@@ -25,15 +25,17 @@ public class Menu extends Application {
 	private BorderPane borderPane;
 	private Button easyButton;
 	private Button hardButton;
+
 	
 	public Menu() {
 		super();
+		
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-
+		
+		
 		borderPane = new BorderPane();
 		Scene scene = new Scene(borderPane, 1000, 800);
 		setUp();
@@ -55,9 +57,9 @@ public class Menu extends Application {
 		welcomeText.setFont(Font.font(40));
 		easyButton = new Button();
 		hardButton = new Button();
-		easyButton.setText("Easy model");
+		easyButton.setText("New Easy model");
 		easyButton.setFont(Font.font(20));
-		hardButton.setText("Hard model");
+		hardButton.setText("New Hard model");
 		hardButton.setFont(Font.font(20));
 		mainVBox.getChildren().add(titleImageView);
 		mainVBox.getChildren().add(welcomeText);
@@ -115,6 +117,7 @@ public class Menu extends Application {
 			stage.hide();
 		});
 	}
-
+	
+	
 }
 

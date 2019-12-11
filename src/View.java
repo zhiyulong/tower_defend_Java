@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -25,8 +26,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class View extends Application implements Observer {
@@ -355,19 +358,49 @@ public class View extends Application implements Observer {
 		}
 
 	}
-	
-	private void backToMenu() {
-		gameStage.close();
+
+	private synchronized void backToMenu() {
+		exec("Pause");
+		gameStage.hide();
 		
 		Platform.runLater(new Runnable() {
 			public void run() {
+				Button last = new Button("Last Stage: " + mode + " mode");
+				last.setFont(Font.font(20));
+				
+				BorderPane borderPane = (BorderPane) menu.getScene().getRoot();
+				HBox hbox = (HBox) borderPane.getChildren().get(0);
+				VBox mainVBox = (VBox) hbox.getChildren().get(0);
+				if (mainVBox.getChildren().size() == 4) {
+					mainVBox.getChildren().add(last);
+				}
+				else 
+					mainVBox.getChildren().set(4, last);
+				
+				last.setOnAction((ActionEvent e1) -> {
+					// load Easy model
+					Platform.runLater(new Runnable() {
+						public void run() {
+							try {
+								gameStage.show();
+								exec("Start");
+							} catch (Exception e) {
+								
+								e.printStackTrace();
+							}
+						}
+					});
+					menu.hide();
+
+				});
+				
 				menu.show();
 			}
 		});
 		
 	}
 	
-	private void startNewGame() {
+	private synchronized void startNewGame() {
 		gameStage.close();
 
 		// reload
