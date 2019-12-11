@@ -158,7 +158,7 @@ public class View extends Application implements Observer {
 	}
 	
 	
-	public void addTargets(int row, Enemie ene) {
+	public synchronized void addTargets(int row, Enemie ene) {
 		targets.get(row).add(ene);
 		
 		for (Tower tower: board.get(row)) {

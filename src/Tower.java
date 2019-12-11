@@ -1,11 +1,16 @@
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.Set;
+
+import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -46,11 +51,12 @@ public class Tower extends Observable {
 
 		movement = new TranslateTransition();
 		movement.setDuration(Duration.seconds(powerSpeed[num - 1]));
+		movement.setFromX(0);
 		movement.setToX(584);
 		movement.setCycleCount(Animation.INDEFINITE);
 		movement.setNode(movingPower);
 		movement.play();
-
+		
 		targets = new ArrayList<Enemie>();
 		movementEvent();
 
@@ -67,9 +73,12 @@ public class Tower extends Observable {
 							int targetX = getCol(target.getTransX()) + 1;
 							int x = getCol(movingPower.getTranslateX()) + col;
 							if (targetX < 9 && x < 9 && targetX == x) {
-								target.remove();
+								
 								setChanged();
 								notifyObservers(target.getID());
+								
+								target.remove();
+								movement.playFromStart();
 							}
 						}
 					}
