@@ -72,21 +72,21 @@ public class Tower extends Observable {
 						if (target.getBlood() > 0) {
 							int targetX = getCol(target.getTransX()) + 1;
 							int x = getCol(movingPower.getTranslateX()) + col;
-							if (targetX < 9 && x < 9 && targetX == x) {
+							
+							// enemy kills tower
+							if (targetX == col) {
+								remove();
+								setChanged();
+								notifyObservers(new int[] {row, col});
+							}
+							
+							else if (targetX < 9 && x < 9 && targetX == x) {
 								
-								if (targetX == col) {
-									remove();
-									setChanged();
-									notifyObservers(new int[] {row, col});
-								}
-								
-								else {
-									target.remove();
-									movement.playFromStart();
+								target.remove();
+								movement.playFromStart();
 									
-									setChanged();
-									notifyObservers(target.getID());
-								}
+								setChanged();
+								notifyObservers(target.getID());			
 							
 							}
 						}
