@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.Alert;
@@ -50,6 +51,7 @@ public class View extends Application implements Observer {
 	private int enemiesSize;
 	
 	private boolean nonChangableMode;
+	private boolean lose;
 	
 	public View(Stage menu, String mode) {
 		super();
@@ -57,9 +59,10 @@ public class View extends Application implements Observer {
 		this.menu = menu;
 		this.mode = mode;
 		enemiesSize += 0;
-		enemiesPerTime = 4;
+		enemiesPerTime = 3;
 		
 		nonChangableMode = false;
+		lose = false;
 		
 		init();
 	}
@@ -245,6 +248,7 @@ public class View extends Application implements Observer {
 		tower.remove();
 		
 		board.get(row).set(col, null);
+		
 	}
 
 	private void setupLeftSideMenu() {
@@ -368,7 +372,7 @@ public class View extends Application implements Observer {
 		// reload
 		Platform.runLater(() -> {
 			try {
-				start(new Stage());
+				new View(menu, mode).start(new Stage());
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -398,11 +402,13 @@ public class View extends Application implements Observer {
 
 			// set action for buying a tower
 			tower.setOnAction(e -> {
-				int towerID = Character.getNumericValue(tower.getText().charAt(10));
-				int money = controller.buyTower(towerID);
-				if (money != -1) {
-					currency_label.setText("$ " + money);
-					buying_label.setText("Placing #" + towerID);
+				if (!nonChangableMode) {
+					int towerID = Character.getNumericValue(tower.getText().charAt(10));
+					int money = controller.buyTower(towerID);
+					if (money != -1) {
+						currency_label.setText("$ " + money);
+						buying_label.setText("Placing #" + towerID);
+					}
 				}
 				
 			});
@@ -447,17 +453,26 @@ public class View extends Application implements Observer {
 		}
 		// enemy killed by tower
 		else if (o instanceof Tower) {
-			enemiesSize --;
-			removeEnemy(((Tower) o).getRow(), (int) arg);
+			if (arg instanceof int[]) {
+				// tower met enemy
+				int[] pos = (int[]) arg;
+				board.get(pos[0]).set(pos[1], null);
+			}else {
+				enemiesSize --;
+				removeEnemy(((Tower) o).getRow(), (int) arg);
+			}
 		}		
 		
 		if (controller.getBlood() <= 0) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setContentText("You Lose!");
-			alert.show();
 			
-			removeAll();	
-			return;
+			if (!lose) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setContentText("You Lose!");
+				alert.show();
+				
+				gameboard.getChildren().clear();	
+				lose = true;
+			}
 		}
 		
 		if (enemiesSize <= 2)
@@ -466,8 +481,10 @@ public class View extends Application implements Observer {
 	}
 	
 	private void removeEnemy(int row, int id) {
+		Enemie ene = null;
 		for (Enemie target: targets.get(row)) {
 			if (target.getID() == id) {
+				ene = target;
 				targets.get(row).remove(target);
 				for (Tower tower: board.get(row)) {
 					if (tower != null)
@@ -476,24 +493,7 @@ public class View extends Application implements Observer {
 				break;
 			}
 		}
-	}
-	
-	private void removeAll() {
-		for(int i=0; i<board.size();i++) {
-			for(int j=0; j<board.get(i).size();j++) {
-				if(board.get(i).get(j)!=null) {	
-					board.get(i).get(j).remove();
-				}
-
-			}
-		}
-		for (int i = 0; i < targets.size(); i++) {
-			for (int j = 0; j < targets.get(i).size(); j++) {
-				if (targets.get(i).get(j) != null) {
-					targets.get(i).get(j).remove();
-				}
-			}
-		}
+		
 	}
 
 

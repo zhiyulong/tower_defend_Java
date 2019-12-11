@@ -74,11 +74,20 @@ public class Tower extends Observable {
 							int x = getCol(movingPower.getTranslateX()) + col;
 							if (targetX < 9 && x < 9 && targetX == x) {
 								
-								setChanged();
-								notifyObservers(target.getID());
+								if (targetX == col) {
+									remove();
+									setChanged();
+									notifyObservers(new int[] {row, col});
+								}
 								
-								target.remove();
-								movement.playFromStart();
+								else {
+									target.remove();
+									movement.playFromStart();
+									
+									setChanged();
+									notifyObservers(target.getID());
+								}
+							
 							}
 						}
 					}

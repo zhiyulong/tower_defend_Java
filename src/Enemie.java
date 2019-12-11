@@ -71,6 +71,7 @@ public class Enemie extends Observable {
 		blood = 0;
 		movement.stop();
 		image.setVisible(false);
+		image.getProperties().clear();
 	}
 
 	public int getID() {
