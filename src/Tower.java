@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -60,17 +61,22 @@ public class Tower extends Observable {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				if (!removed) {
-					for (Enemie target : targets) {
-						if (target.getBlood() > 0) {
-							int targetX = getCol(target.getTransX()) + 1;
-							int x = getCol(movingPower.getTranslateX()) + col;
-							if (targetX < 9 && x < 9 && targetX == x) {
-								target.remove();
-								
-								setChanged();
-								notifyObservers(target.getID());
+					
+					try {
+						for (Enemie target : targets) {
+							if (target.getBlood() > 0) {
+								int targetX = getCol(target.getTransX()) + 1;
+								int x = getCol(movingPower.getTranslateX()) + col;
+								if (targetX < 9 && x < 9 && targetX == x) {
+									target.remove();
+									setChanged();
+									notifyObservers(target.getID());
+								}
 							}
 						}
+					} catch (Exception e) {
+						
+						//e.printStackTrace();
 					}
 				}
 			}
@@ -93,10 +99,13 @@ public class Tower extends Observable {
 		return col;
 	}
 
+	public void setTarget(ArrayList<Enemie> targets) {
+		this.targets = targets;
+	}
+	
 	public void addTarget(Enemie ene) {
 		targets.add(ene);
 	}
-	
 
 	public int getID() {
 		return towerID;
@@ -138,16 +147,6 @@ public class Tower extends Observable {
 	public int getRow() {
 		return row;
 	}
-	
-	public void delectTarget(int ID) {
-		
-		for (Enemie ene: targets) {
-			if (ene.getID() == ID) {
-				targets.remove(ene);
-				break;
-			}
-		}
-		
-	}
+
 	
 }

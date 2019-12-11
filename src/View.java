@@ -1,19 +1,24 @@
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -26,58 +31,216 @@ import javafx.stage.Stage;
 public class View extends Application implements Observer {
 
 	private Controller controller;
-
-	private BorderPane mainPane;
-	private GridPane gameboard;
-	private Stage gameStage;
 	
 	private Stage menu;
+	private Stage gameStage;
+	
+	private BorderPane mainPane;
+	private GridPane gameboard;
+	
+	private Label currency_label;
+	private Label blood_label;
+	private Label buying_label;
 	
 	private String mode;
-
+	
+	private ArrayList<ArrayList<Tower>> board;
+	private ArrayList<ArrayList<Enemie>> targets;
+	private int enemiesPerTime;
+	private int enemiesSize;
+	
 	public View(Stage menu, String mode) {
 		super();
 		
 		this.menu = menu;
 		this.mode = mode;
+		enemiesSize += 0;
+		enemiesPerTime = 4;
+		
+		init();
 	}
+	
+	public void init() {
+		board = new ArrayList<>();
+		targets = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			ArrayList<Tower> column = new ArrayList<>();
 
+			for (int j = 0; j < 9; j++) {
+				column.add(null);
+			}
 
+			board.add(column);
+
+			ArrayList<Enemie> targetsPerRow = new ArrayList<Enemie>();
+			targets.add(targetsPerRow);
+		}
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		this.gameStage = primaryStage;
-
+		
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
 		Scene scene = new Scene(mainPane);
-
+		
 		// set MVC relation first
 		controller = TowerDefense.setRelations(this);
-
+		
 		// set up the game
 		setupGame();
 
-		primaryStage.setTitle("Tower Defense");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
+		gameStage.setTitle("Tower Defense: "+mode+" mode");
+		gameStage.setScene(scene);
+		gameStage.show();
+		
 	}
-
+	
 	private void setupGame() {
-
 		displayHome();
-
-		setupMenu(gameStage);
-
+		
+		setupUppSideMenu();
+		setupLeftSideMenu();
+		
 		setupGameBoard();
+		
+		addEnemies();
+	}
+	
+	private void setupGameBoard() {
+		gameboard.setVgap(4);
+		gameboard.setHgap(1);
+		// set margin
+		gameboard.setPadding(new Insets(0, 0, 0, 0));
+		// fill the background
+		gameboard.setBackground(new Background(new BackgroundFill(Color.HONEYDEW, CornerRadii.EMPTY, Insets.EMPTY)));
+		
+		for (int r = 0; r < 6; r++) {
 
-		controller.setUpEnemies(this);
+			Image grass = new Image("./images/grass.png");
+			Image redland = new Image("./images/red.png");
 
+			for (int c = 0; c < 9; c++) {
+
+				gameboard.add(new ImageView(grass), c, r);
+			}
+
+			gameboard.add(new ImageView(redland), 9, r);
+
+		}
+		addEventForGameBoard();
+		mainPane.setCenter(gameboard);
+		
+	}
+	
+	private void addEnemies() {
+		if (controller.getBlood() > 0) {
+			Random rand = new Random();
+			
+			for (int i = 0; i < enemiesPerTime; i++) {
+				int row = rand.nextInt(6);
+				int enimeID = rand.nextInt(4);
+				
+				Enemie enemie = new Enemie(enimeID, row);
+				enemie.addObserver(this);
+				
+				addTargets(row, enemie);
+				gameboard.add(enemie.getView(), 9, row);
+			}
+			enemiesSize += enemiesPerTime;
+			enemiesPerTime++;
+		}
+	}
+	
+	
+	public void addTargets(int row, Enemie ene) {
+		targets.get(row).add(ene);
+		
+		for (Tower tower: board.get(row)) {
+			if (tower != null) {
+				tower.addTarget(ene);
+			}
+		}
+		
+	}
+	
+	
+	private void addEventForGameBoard() {
+		
+		gameboard.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				int mouseX = ((int) event.getX());
+				int mouseY = ((int) event.getY());
+				
+				controller.mouseMoved(mouseX, mouseY);
+			}
+
+		});
+		
+		gameboard.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+
+				// check removing tower
+				if (buying_label.getText().equals("Not buying") && event.getButton() == MouseButton.SECONDARY) {
+					int[] pos = controller.getPos((int) event.getX(), (int) event.getY());
+					
+					if (controller.removeTower(pos[0], pos[1]) != 0)
+						sellTower(pos[0], pos[1]);
+				}
+				
+				// check adding tower
+				else if ((!buying_label.getText().equals("Not buying")) && controller.getNewTowerPos() != null) {
+
+					// right click cancel buying the tower
+					if (event.getButton() == MouseButton.SECONDARY) {
+						int money = controller.cancelBuying();
+						currency_label.setText("$ " + money);
+					} else
+						placeTower();
+				}
+				
+			}
+
+
+		});
+		
+	}
+	
+	private void placeTower() {
+		int id = controller.addTower();
+		
+		if (id != 0) {
+			int[] pos = controller.getNewTowerPos();
+			int row = pos[0];
+			int col = pos[1];
+			
+			Tower tower = new Tower(id, row, col);
+			tower.addObserver(this);
+			
+			gameboard.add(tower.getView(), col, row);
+			gameboard.add(tower.getMovement(), col, row);
+			
+			board.get(row).set(col, tower);
+			tower.setTarget(targets.get(row));
+			
+			buying_label.setText("Not buying");
+		}
+		
+	}
+	
+	private void sellTower(int row, int col) {
+		currency_label.setText("$ " + controller.getCurrency());
+		
+		// remove the tower
+		Tower tower = board.get(row).get(col);
+		tower.remove();
 	}
 
-	private void setupMenu(Stage primaryStage) {
-		MenuBar menu = new MenuBar();
+	private void setupLeftSideMenu() {
+
 		// button about new game, pause, fast.
 		GridPane mainMenu = new GridPane();
 		mainMenu.setVgap(20);
@@ -99,46 +262,7 @@ public class View extends Application implements Observer {
 		mainMenu.add(newgame, 0, 1);
 		mainMenu.add(stopBegin, 0, 2);
 		mainMenu.add(speed, 0, 3);
-
-		// buy towers
-		Menu buyTowers = new Menu();
-		buyTowers.setText("Buy Towers");
-		// buying status
-		Label buying_label = new Label("Not buying");
-		controller.setBuyingStatus(buying_label);
-		Menu buyingStatus = new Menu("", buying_label);
-
-		// currency
-		Label currency_label = new Label();
-		controller.setCurrencyLabel(currency_label);
-		Menu currency = new Menu("", currency_label);
-
-		for (int i = 1; i < 7; i++) {
-			MenuItem tower = new MenuItem();
-			tower.setText("$" + i + " Tower #" + i);
-
-			// set action for buying a tower
-			tower.setOnAction(e -> {
-				controller.buyTower(Character.getNumericValue(tower.getText().charAt(10)));
-
-			});
-
-			buyTowers.getItems().add(tower);
-		}
-
-		// blood status
-		Label blood_label = new Label();
-		controller.setBloodStatus(blood_label);
-		Menu blood = new Menu("", blood_label);
-
-		menu.getMenus().add(buyTowers);
-		menu.getMenus().add(buyingStatus);
-		menu.getMenus().add(currency);
-		menu.getMenus().add(blood);
-
-		mainPane.setTop(menu);
-		mainPane.setRight(mainMenu);
-
+		
 		// behavior of new game, pause, fast;
 		backToMenu.setOnMouseClicked(e -> {
 			backToMenu();
@@ -148,21 +272,68 @@ public class View extends Application implements Observer {
 			startNewGame();
 		});
 		pause.setOnMouseClicked(e -> {
-			controller.exec(pause.getText());
+			exec(pause.getText());
 		});
 		start.setOnMouseClicked(e -> {
-			controller.exec(start.getText());
+			exec(start.getText());
 		});
 		fast.setOnMouseClicked(e -> {
 
-			controller.exec(fast.getText());
+			exec(fast.getText());
 		});
 		normal.setOnMouseClicked(e -> {
-			controller.exec(normal.getText());
+			exec(normal.getText());
 
 		});
+		
+		mainPane.setRight(mainMenu);
+		
 	}
+	
+	public void exec(String text) {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {
+					if(text.equals("Start")) {
+						board.get(i).get(j).start();
+					}
+					if(text.equals("Pause")) {
+						board.get(i).get(j).stop();
+					}					
+					if(text.equals("Fast")) {
+						board.get(i).get(j).fast();
+					}					
+					if(text.equals("Normal")) {
+						board.get(i).get(j).normal();
+					}
 
+				}
+
+			}
+		}
+
+		for(int i=0; i<targets.size();i++) {
+			for(int j=0; j<targets.get(i).size();j++) {
+				if(targets.get(i).get(j)!=null) {
+					if(text.equals("Start")) {
+						targets.get(i).get(j).start();
+					}
+					if(text.equals("Pause")) {
+						targets.get(i).get(j).stop();
+					}					
+					if(text.equals("Fast")) {
+						targets.get(i).get(j).fast();
+					}					
+					if(text.equals("Normal")) {
+						targets.get(i).get(j).normal();
+					}
+
+				}
+			}
+		}
+
+	}
+	
 	private void backToMenu() {
 		gameStage.close();
 		
@@ -173,7 +344,7 @@ public class View extends Application implements Observer {
 		});
 		
 	}
-
+	
 	private void startNewGame() {
 		gameStage.close();
 
@@ -189,30 +360,51 @@ public class View extends Application implements Observer {
 
 	}
 
-	private void setupGameBoard() {
-		gameboard.setVgap(4);
-		gameboard.setHgap(1);
-		// set margin
-		gameboard.setPadding(new Insets(0, 0, 0, 0));
-		// fill the background
-		gameboard.setBackground(new Background(new BackgroundFill(Color.HONEYDEW, CornerRadii.EMPTY, Insets.EMPTY)));
+	private void setupUppSideMenu() {
+		MenuBar menu = new MenuBar();
+		
+		// buy towers
+		Menu buyTowers = new Menu();
+		buyTowers.setText("Buy Towers");
+		
+		// buying status
+		buying_label = new Label("Not buying");
+		Menu buyingStatus = new Menu("", buying_label);
 
-		for (int r = 0; r < 6; r++) {
+		// currency
+		currency_label = new Label("$ " + controller.getCurrency());
+		Menu currency = new Menu("", currency_label);
 
-			Image grass = new Image("./images/grass.png");
-			Image redland = new Image("./images/red.png");
+		for (int i = 1; i < 7; i++) {
+			MenuItem tower = new MenuItem();
+			tower.setText("$" + i + " Tower #" + i);
 
-			for (int c = 0; c < 9; c++) {
+			// set action for buying a tower
+			tower.setOnAction(e -> {
+				int towerID = Character.getNumericValue(tower.getText().charAt(10));
+				int money = controller.buyTower(towerID);
+				if (money != -1) {
+					currency_label.setText("$ " + money);
+					buying_label.setText("Placing #" + towerID);
+				}
+				
+			});
 
-				gameboard.add(new ImageView(grass), c, r);
-			}
-
-			gameboard.add(new ImageView(redland), 9, r);
-
+			buyTowers.getItems().add(tower);
 		}
-		controller.addEventForGameBoard(gameboard, this);
-		mainPane.setCenter(gameboard);
+
+		// blood status
+		blood_label = new Label("Blood: " + controller.getBlood());
+		Menu blood = new Menu("", blood_label);
+
+		menu.getMenus().add(buyTowers);
+		menu.getMenus().add(buyingStatus);
+		menu.getMenus().add(currency);
+		menu.getMenus().add(blood);
+
+		mainPane.setTop(menu);
 	}
+	
 
 	private void displayHome() {
 		ImageView tower = new ImageView(new Image("./images/TOWER.png"));
@@ -221,37 +413,71 @@ public class View extends Application implements Observer {
 		mainPane.setLeft(tower);
 	}
 
-
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+
 		// enemy arrived home
 		if (o instanceof Enemie) {
-			controller.arrived(o, arg);
-
+			int enemyID = Character.getNumericValue(arg.toString().charAt(0));
+			controller.arrived(enemyID);
+			
+			blood_label.setText("Blood: " + controller.getBlood());
+			
+			Enemie ene = ((Enemie) o);
+			ene.remove();
+			removeEnemy(ene.getRow(), ene.getID());
+			enemiesSize--;
 		}
-
 		// enemy killed by tower
-		if (o instanceof Tower) {
-			controller.killed(o, arg);
-
-		}
+		else if (o instanceof Tower) {
+			enemiesSize --;
+			removeEnemy(((Tower) o).getRow(), (int) arg);
+		}		
 		
-		if (controller.getBlood() < 0) {
+		if (controller.getBlood() <= 0) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setContentText("You Lose!");
 			alert.show();
-
-			controller.removeAll();	
+			
+			removeAll();	
 			return;
 		}
-
-		if (controller.get_enemiesSize() <= 2) {
-
-			controller.setUpEnemies(this);
-		}
-
+		
+		if (enemiesSize <= 2)
+			addEnemies();
+		
 	}
+	
+	private void removeEnemy(int row, int id) {
+		for (Enemie target: targets.get(row)) {
+			if (target.getID() == id) {
+				targets.get(row).remove(target);
+				for (Tower tower: board.get(row)) {
+					if (tower != null)
+						tower.setTarget(targets.get(row));
+				}
+				break;
+			}
+		}
+	}
+	
+	private void removeAll() {
+		for(int i=0; i<board.size();i++) {
+			for(int j=0; j<board.get(i).size();j++) {
+				if(board.get(i).get(j)!=null) {	
+					board.get(i).get(j).remove();
+				}
+
+			}
+		}
+		for (int i = 0; i < targets.size(); i++) {
+			for (int j = 0; j < targets.get(i).size(); j++) {
+				if (targets.get(i).get(j) != null) {
+					targets.get(i).get(j).remove();
+				}
+			}
+		}
+	}
+
 
 }

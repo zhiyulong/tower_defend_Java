@@ -4,92 +4,46 @@ public class Model {
 
 	private int currency;
 	private double blood;
-
-	private ArrayList<ArrayList<Tower>> board;
-	private ArrayList<ArrayList<Enemie>> targets;
-
+	
+	private ArrayList<ArrayList<Integer>> board;
+	
 	public Model() {
-		init();
-	}
-
-	public void init() {
 		currency = 15;
 		blood = 100;
-
+		
+		init();
+	}
+	
+	public void init() {
 		board = new ArrayList<>();
-		targets = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
-			ArrayList<Tower> column = new ArrayList<>();
+			ArrayList<Integer> column = new ArrayList<>();
 
 			for (int j = 0; j < 9; j++) {
-				column.add(null);
+				column.add(0);
 			}
 
 			board.add(column);
-
-			ArrayList<Enemie> targetsPerRow = new ArrayList<Enemie>();
-			targets.add(targetsPerRow);
-		}
-
-	}
-
-	public void removeEnemy(int row, int ID) {
-		
-		
-		for (Enemie ene: targets.get(row)) {
-			if (ene.getID() == ID) {
-				targets.get(row).remove(ene);
-				break;
-			}
-		}
-		
-		
-//		for (Tower tower: board.get(row)) {
-//			if (tower != null)
-//				tower.delectTarget(ID);
-//		}
-		
-	}
-	
-	
-
-	
-	public Tower removeTower(int row, int col) {
-		Tower tower = board.get(row).get(col);
-		if (tower != null)
-			board.get(row).set(col, null);
-
-		return tower;
-	}
-
-	public Tower addNewTower(int towerID, int row, int col) {
-
-		if (board.get(row).get(col) != null)
-			return null;
-
-		Tower tower = new Tower(towerID, col, row);
-		board.get(row).set(col, tower);
-
-		for (Enemie target : targets.get(row)) {
-			if (target.getBlood() > 0)
-				tower.addTarget(target);
-		}
-		
-		return tower;
-	}
-
-	public void addTargets(int row, Enemie ene) {
-		targets.get(row).add(ene);
-		
-		for (Tower tower: board.get(row)) {
-			if (tower != null) {
-				tower.addTarget(ene);
-			}
 		}
 		
 	}
 	
-
+	public int addTower(int row, int col, int id) {
+		if (board.get(row).get(col) != 0) 
+			return 0;
+		
+		board.get(row).set(col, id);
+		return id;
+	}
+	
+	public int removeTower(int row, int col) {
+		int id = board.get(row).get(col);
+		if (id != 0) 
+			board.get(row).set(col, 0);
+		
+		return id;
+	}
+	
 	/**
 	 * Adds currency to the player's balance.
 	 * 
@@ -109,18 +63,7 @@ public class Model {
 		currency -= amount;
 		return currency;
 	}
-
-	/**
-	 * This method checks if the player has enough currency to spend on a particular
-	 * purchase.
-	 * 
-	 * @param amount int of the cost of the purchase.
-	 * @return boolean of whether or not the player has enough currency.
-	 */
-	public boolean hasCurrency(int amount) {
-		return currency - amount < 0;
-	}
-
+	
 	/**
 	 * Getter that returns how much currency the player has.
 	 * 
@@ -130,99 +73,14 @@ public class Model {
 		return currency;
 	}
 
-	public double getBlood() {
-		return blood;
-	}
-
 	public void setBlood(double blood) {
 		this.blood = blood;
 	}
-
-
-
-	public void removeAll() {
-		for(int i=0; i<board.size();i++) {
-			for(int j=0; j<board.get(i).size();j++) {
-				if(board.get(i).get(j)!=null) {	
-					board.get(i).get(j).remove();
-				}
-
-			}
-		}
-		for (int i = 0; i < targets.size(); i++) {
-			for (int j = 0; j < targets.get(i).size(); j++) {
-				if (targets.get(i).get(j) != null) {
-					targets.get(i).get(j).remove();
-				}
-			}
-		}
-
+	
+	public double getBlood() {
+		return blood;
 	}
-
-	public void stop() {
-		for (int i = 0; i < board.size(); i++) {
-			for (int j = 0; j < board.get(i).size(); j++) {
-				if (board.get(i).get(j) != null) {
-
-					board.get(i).get(j).stop();
-				}
-
-			}
-		}
-		for (int i = 0; i < targets.size(); i++) {
-			for (int j = 0; j < targets.get(i).size(); j++) {
-				if (targets.get(i).get(j) != null) {
-					targets.get(i).get(j).stop();
-				}
-			}
-		}
-	}
-
-
-
-
-	public void exec(String text) {
-		for(int i=0; i<board.size();i++) {
-			for(int j=0; j<board.get(i).size();j++) {
-				if(board.get(i).get(j)!=null) {
-					if(text.equals("Start")) {
-						board.get(i).get(j).start();
-					}
-					if(text.equals("Pause")) {
-						board.get(i).get(j).stop();
-					}					
-					if(text.equals("Fast")) {
-						board.get(i).get(j).fast();
-					}					
-					if(text.equals("Normal")) {
-						board.get(i).get(j).normal();
-					}
-
-				}
-
-			}
-		}
-
-		for(int i=0; i<targets.size();i++) {
-			for(int j=0; j<targets.get(i).size();j++) {
-				if(targets.get(i).get(j)!=null) {
-					if(text.equals("Start")) {
-						targets.get(i).get(j).start();
-					}
-					if(text.equals("Pause")) {
-						targets.get(i).get(j).stop();
-					}					
-					if(text.equals("Fast")) {
-						targets.get(i).get(j).fast();
-					}					
-					if(text.equals("Normal")) {
-						targets.get(i).get(j).normal();
-					}
-
-				}
-			}
-		}
-
-	}
-
+	
+	
+	
 }
