@@ -36,9 +36,9 @@ public class Tower extends Observable {
 	/**
 	 * Constructor for Tower object
 	 * 
-	 * @param num	int of the id of the Tower's style
-	 * @param col	int of the col the Tower should occupy
-	 * @param row	int of the row the Tower should occupy
+	 * @param num	id of the Tower's style
+	 * @param col	col the Tower should occupy
+	 * @param row	row the Tower should occupy
 	 */
 	public Tower(int num, int col, int row) {
 		powerSpeed = new double[] { 5, 3, 2, 1.5, 1, 0.6 };
@@ -114,7 +114,7 @@ public class Tower extends Observable {
 	/**
 	 * Getter for the horizontal position of the Tower relative to the board
 	 * 
-	 * @param x	double of the Tower's position.
+	 * @param x	Tower object's position.
 	 * 
 	 * @return	int of the column the Tower occupies on the board.
 	 */
@@ -134,8 +134,7 @@ public class Tower extends Observable {
 	/**
 	 * Changes the Tower's target to new enemies.
 	 * 
-	 * @param targets	ArrayList holding Enemie objects that are to be 
-	 * 					targeted.
+	 * @param targets	Enemie objects that are to be targeted.
 	 */
 	public void setTarget(ArrayList<Enemie> targets) {
 		this.targets = targets;

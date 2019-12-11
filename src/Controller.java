@@ -8,7 +8,7 @@ public class Controller {
 	
 	/**
 	 * Constructor for a Controller object
-	 * @param model	a Model object representing the current state of game
+	 * @param model	Current state of game
 	 */
 	public Controller(Model model) {
 		this.model = model;
@@ -22,8 +22,8 @@ public class Controller {
 	 * Helper method to help translate the position of the mouse into its
 	 * location on the game board.
 	 * 
-	 * @param mouseX	an int of the mouse's horizontal position in the game
-	 * @param mouseY	an int of the mouse's vertical position in the game
+	 * @param mouseX	The mouse's horizontal position in the game
+	 * @param mouseY	The mouse's vertical position in the game
 	 */
 	public void mouseMoved(int mouseX, int mouseY) {
 		if (settingTower != 0 && mouseX < 586 && mouseX > 0 && mouseY >= 5 && mouseY <= 410) {
@@ -80,8 +80,8 @@ public class Controller {
 	 * Sets the board position for a tower that is being placed to the x and y
 	 * mouse coordinates.
 	 * 
-	 * @param x	int of horizontal coordinate in the game window.
-	 * @param y	int of vertical coordinate in the game window.
+	 * @param x	Horizontal coordinate in the game window.
+	 * @param y	Vertical coordinate in the game window.
 	 */
 	private void setPos(int x, int y) {
 
@@ -96,8 +96,8 @@ public class Controller {
 	/**
 	 * Retrives the board position of the x and y mouse coordinates.
 	 * 
-	 * @param x	int of horizontal coordinate in the game window.
-	 * @param y	int of vertical coordinate in the game window.
+	 * @param x	Horizontal coordinate in the game window.
+	 * @param y	Vertical coordinate in the game window.
 	 * 
 	 * @return	array of ints of board coordinates corresponding to the mouse
 	 * 			coordinates.
@@ -128,7 +128,7 @@ public class Controller {
 	/**
 	 * Adjusts player's currency when they purchase a tower.
 	 * 
-	 * @param towerID	int of the id of the tower to be purchased.
+	 * @param towerID	id of the tower to be purchased.
 	 * 
 	 * @return	int of the amount of currency subtracted or -1 if they do not
 	 * 			have enough currency.
@@ -172,7 +172,7 @@ public class Controller {
 	/**
 	 * Sets the blood value of newly created enemies.
 	 * 
-	 * @param enemyID	int of the enemy's ID.
+	 * @param enemyID	the enemy's ID.
 	 */
 	public void arrived(int enemyID) {
 		model.setBlood(model.getBlood() - enemyID * 10);

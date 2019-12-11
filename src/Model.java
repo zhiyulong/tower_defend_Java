@@ -85,7 +85,8 @@ public class Model {
 	/**
 	 * Subtracts currency from the player's balance.
 	 * 
-	 * @param amount int of what is to be subtracted from the player's balance.
+	 * @param amount 	What is to be subtracted from the player's currency
+	 * 					balance.
 	 */
 	public int subtractCurrency(int amount) {
 		currency -= amount;

@@ -24,10 +24,10 @@ public class Enemie extends Observable {
 	/**
 	 * Constructor for an Enemie object.
 	 * 
-	 * @param num		int of the number of enemies to be spawned.
-	 * @param row		int of the row to spawn the enemies at.
-	 * @param mode		String of the difficulty level.
-	 * @param faster	boolean of the speed of the enemies.
+	 * @param num		The number of enemies to be spawned.
+	 * @param row		The row to spawn the enemies at.
+	 * @param mode		The difficulty level.
+	 * @param faster	Are the enemies moving 5x faster than normal?
 	 */
 	public Enemie(int num, int row, String mode, boolean faster) {
 		this.row = row;
@@ -123,7 +123,7 @@ public class Enemie extends Observable {
 	/**
 	 * Sets the blood/life amount of the enemy.
 	 * 
-	 * @param blood	int of the amount of blood the enemy has.
+	 * @param blood	The amount of blood/health the enemy has.
 	 */
 	public void setBlood(int blood) {
 		this.blood = blood;
@@ -141,7 +141,7 @@ public class Enemie extends Observable {
 	/**
 	 * Subtracts the enemy's blood.
 	 * 
-	 * @param num	int of the amount of blood to be subtracted from the enemy
+	 * @param num	The amount of blood to be subtracted from the enemy
 	 * 				upon hit.
 	 */
 	public void subBlood(int num) {

@@ -97,7 +97,7 @@ public class Menu extends Application {
 	 * Handles what to do when a button is clicked and sets the appropriate
 	 * difficulty level.
 	 * 
-	 * @param stage	Stage object of the player's screen.
+	 * @param stage	The player's screen.
 	 */
 	public void buttonEvent(Stage stage) {
 		easyButton.setOnAction((ActionEvent e1) -> {
