@@ -68,6 +68,9 @@ public class View extends Application implements Observer {
 	}
 	
 	public void init() {
+		// set MVC relation first
+		controller = TowerDefense.setRelations(this, mode);
+				
 		board = new ArrayList<>();
 		targets = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
@@ -91,9 +94,6 @@ public class View extends Application implements Observer {
 		mainPane = new BorderPane();
 		gameboard = new GridPane();
 		Scene scene = new Scene(mainPane);
-		
-		// set MVC relation first
-		controller = TowerDefense.setRelations(this, mode);
 		
 		// set up the game
 		setupGame();
@@ -149,7 +149,7 @@ public class View extends Application implements Observer {
 				int row = rand.nextInt(6);
 				int enimeID = rand.nextInt(4);
 				
-				Enemie enemie = new Enemie(enimeID, row, mode);
+				Enemie enemie = new Enemie(enimeID, row, mode, nonChangableMode);
 				enemie.addObserver(this);
 				
 				addTargets(row, enemie);
@@ -291,7 +291,8 @@ public class View extends Application implements Observer {
 			exec(pause.getText());
 		});
 		start.setOnMouseClicked(e -> {
-			nonChangableMode = false;
+			if (speedStatus.getText().equals("Normal speed"))
+				nonChangableMode = false;
 			status.setText("Running");
 			exec(start.getText());
 		});
@@ -495,6 +496,5 @@ public class View extends Application implements Observer {
 		}
 		
 	}
-
 
 }

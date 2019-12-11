@@ -21,7 +21,7 @@ public class Enemie extends Observable {
 	private int[] speed;
 	private int[] live;
 
-	public Enemie(int num, int row, String mode) {
+	public Enemie(int num, int row, String mode, boolean faster) {
 		this.row = row;
 		
 		live = new int[] { 50, 70, 80, 100 };
@@ -42,6 +42,8 @@ public class Enemie extends Observable {
 		movement.setCycleCount(1);
 		movement.play();
 
+		if (faster)	fast();
+			
 		movementEvent();
 	}
 
