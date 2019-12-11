@@ -49,6 +49,8 @@ public class View extends Application implements Observer {
 	private int enemiesPerTime;
 	private int enemiesSize;
 	
+	private boolean nonChangableMode;
+	
 	public View(Stage menu, String mode) {
 		super();
 		
@@ -56,6 +58,8 @@ public class View extends Application implements Observer {
 		this.mode = mode;
 		enemiesSize += 0;
 		enemiesPerTime = 4;
+		
+		nonChangableMode = false;
 		
 		init();
 	}
@@ -86,7 +90,7 @@ public class View extends Application implements Observer {
 		Scene scene = new Scene(mainPane);
 		
 		// set MVC relation first
-		controller = TowerDefense.setRelations(this);
+		controller = TowerDefense.setRelations(this, mode);
 		
 		// set up the game
 		setupGame();
@@ -142,7 +146,7 @@ public class View extends Application implements Observer {
 				int row = rand.nextInt(6);
 				int enimeID = rand.nextInt(4);
 				
-				Enemie enemie = new Enemie(enimeID, row);
+				Enemie enemie = new Enemie(enimeID, row, mode);
 				enemie.addObserver(this);
 				
 				addTargets(row, enemie);
@@ -184,7 +188,8 @@ public class View extends Application implements Observer {
 			public void handle(MouseEvent event) {
 
 				// check removing tower
-				if (buying_label.getText().equals("Not buying") && event.getButton() == MouseButton.SECONDARY) {
+				if (!nonChangableMode && buying_label.getText().equals("Not buying") 
+						&& event.getButton() == MouseButton.SECONDARY) {
 					int[] pos = controller.getPos((int) event.getX(), (int) event.getY());
 					
 					if (controller.removeTower(pos[0], pos[1]) != 0)
@@ -192,7 +197,8 @@ public class View extends Application implements Observer {
 				}
 				
 				// check adding tower
-				else if ((!buying_label.getText().equals("Not buying")) && controller.getNewTowerPos() != null) {
+				else if (!nonChangableMode && (!buying_label.getText().equals("Not buying")) 
+						&& controller.getNewTowerPos() != null) {
 
 					// right click cancel buying the tower
 					if (event.getButton() == MouseButton.SECONDARY) {
@@ -217,7 +223,7 @@ public class View extends Application implements Observer {
 			int row = pos[0];
 			int col = pos[1];
 			
-			Tower tower = new Tower(id, row, col);
+			Tower tower = new Tower(id, col, row);
 			tower.addObserver(this);
 			
 			gameboard.add(tower.getView(), col, row);
@@ -237,6 +243,8 @@ public class View extends Application implements Observer {
 		// remove the tower
 		Tower tower = board.get(row).get(col);
 		tower.remove();
+		
+		board.get(row).set(col, null);
 	}
 
 	private void setupLeftSideMenu() {
@@ -249,14 +257,16 @@ public class View extends Application implements Observer {
 		Button newgame = new Button("Restart");
 		
 		VBox stopBegin = new VBox();
+		Label status = new Label("Running");
 		Button pause = new Button("Pause");
 		Button start = new Button("Start");
-		stopBegin.getChildren().addAll(pause, start);
+		stopBegin.getChildren().addAll(status, pause, start);
 		
 		VBox speed = new VBox();
+		Label speedStatus = new Label("Normal speed");
 		Button fast = new Button("Fast");
 		Button normal= new Button("Normal");
-		speed.getChildren().addAll(fast, normal);
+		speed.getChildren().addAll(speedStatus, fast, normal);
 		
 		mainMenu.add(backToMenu, 0, 0);
 		mainMenu.add(newgame, 0, 1);
@@ -272,16 +282,23 @@ public class View extends Application implements Observer {
 			startNewGame();
 		});
 		pause.setOnMouseClicked(e -> {
+			nonChangableMode = true;
+			status.setText("Pausing");
 			exec(pause.getText());
 		});
 		start.setOnMouseClicked(e -> {
+			nonChangableMode = false;
+			status.setText("Running");
 			exec(start.getText());
 		});
 		fast.setOnMouseClicked(e -> {
-
+			nonChangableMode = true;
+			speedStatus.setText("Fast Forward");
 			exec(fast.getText());
 		});
 		normal.setOnMouseClicked(e -> {
+			nonChangableMode = false;
+			speedStatus.setText("Normal speed");
 			exec(normal.getText());
 
 		});
@@ -414,7 +431,7 @@ public class View extends Application implements Observer {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public synchronized void update(Observable o, Object arg) {
 
 		// enemy arrived home
 		if (o instanceof Enemie) {

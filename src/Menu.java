@@ -92,7 +92,7 @@ public class Menu extends Application {
 					try {
 						new View(stage, "easy").start(new Stage());
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 				}
@@ -102,8 +102,17 @@ public class Menu extends Application {
 		});
 		hardButton.setOnAction((ActionEvent e2) -> {
 			// load Hard model
-
-//	//		stage.hide();
+			Platform.runLater(new Runnable() {
+				public void run() {
+					try {
+						new View(stage, "hard").start(new Stage());
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}
+				}
+			});
+			stage.hide();
 		});
 	}
 

@@ -19,18 +19,20 @@ public class Tower extends Observable {
 	private Circle movingPower;
 	private TranslateTransition movement;
 
-	private Color[] powerColor = new Color[] { Color.RED, Color.BLUE, Color.DEEPPINK, Color.YELLOW, Color.GREEN,
-			Color.ORANGE };
-	private double[] powerSpeed = new double[] { 2.5, 2, 1.4, 1, 0.8, 0.4 };
+	private Color[] powerColor;
+	private double[] powerSpeed;
 
 	private int col;
 	private int row;
 	private ArrayList<Enemie> targets;
 
-	private boolean removed;
 	private ChangeListener listener;
 
 	public Tower(int num, int col, int row) {
+		powerSpeed = new double[] { 5, 3, 2, 1.5, 1, 0.6 };
+		powerColor = new Color[] { Color.RED, Color.BLUE, Color.DEEPPINK, Color.YELLOW, 
+				Color.GREEN, Color.ORANGE };
+		
 		this.col = col;
 		this.row = row;
 		
@@ -50,7 +52,6 @@ public class Tower extends Observable {
 		movement.play();
 
 		targets = new ArrayList<Enemie>();
-		removed = false;
 		movementEvent();
 
 	}
@@ -60,24 +61,20 @@ public class Tower extends Observable {
 		listener = new ChangeListener<Object>() {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				if (!removed) {
-					
-					try {
-						for (Enemie target : targets) {
-							if (target.getBlood() > 0) {
-								int targetX = getCol(target.getTransX()) + 1;
-								int x = getCol(movingPower.getTranslateX()) + col;
-								if (targetX < 9 && x < 9 && targetX == x) {
-									target.remove();
-									setChanged();
-									notifyObservers(target.getID());
-								}
+				try {
+					for (Enemie target : targets) {
+						if (target.getBlood() > 0) {
+							int targetX = getCol(target.getTransX()) + 1;
+							int x = getCol(movingPower.getTranslateX()) + col;
+							if (targetX < 9 && x < 9 && targetX == x) {
+								target.remove();
+								setChanged();
+								notifyObservers(target.getID());
 							}
 						}
-					} catch (Exception e) {
-						
-						//e.printStackTrace();
 					}
+				} catch (Exception e) {
+					
 				}
 			}
 		};
@@ -120,7 +117,6 @@ public class Tower extends Observable {
 	}
 
 	public void remove() {
-		removed = true;
 
 		movement.stop();
 		image.setVisible(false);
@@ -140,8 +136,9 @@ public class Tower extends Observable {
 	public void normal() {
 		movement.setRate(1);
 	}
+	
 	public void fast() {
-		movement.setRate(2);
+		movement.setRate(5);
 	}
 	
 	public int getRow() {

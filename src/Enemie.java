@@ -18,11 +18,17 @@ public class Enemie extends Observable {
 	private int blood;
 	private int row;
 
-	private int[] speed = new int[] { 40, 30, 20, 15 };
-	private int[] live = new int[] { 50, 70, 80, 100 };
+	private int[] speed;
+	private int[] live;
 
-	public Enemie(int num, int row) {
+	public Enemie(int num, int row, String mode) {
 		this.row = row;
+		
+		live = new int[] { 50, 70, 80, 100 };
+		if (mode.equals("easy"))
+			speed = new int[] { 40, 30, 20, 15 };
+		else
+			speed = new int[] { 20, 15, 10, 7 };
 		
 		enemieID = num + 1;
 		blood = live[num];
@@ -100,7 +106,7 @@ public class Enemie extends Observable {
 		movement.setRate(1);
 	}
 	public void fast() {
-		movement.setRate(2);
+		movement.setRate(5);
 	}
 	
 	public int getRow() {

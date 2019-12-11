@@ -7,8 +7,11 @@ public class Model {
 	
 	private ArrayList<ArrayList<Integer>> board;
 	
-	public Model() {
-		currency = 15;
+	public Model(String mode) {
+		if (mode.equals("easy"))
+			currency = 15;
+		else 
+			currency = 10;
 		blood = 100;
 		
 		init();
