@@ -26,16 +26,19 @@ public class Menu extends Application {
 	private Button easyButton;
 	private Button hardButton;
 
-	
+	/**
+	 * Constructor for a Menu object.
+	 */
 	public Menu() {
 		super();
 		
 	}
 
+	/**
+	 * Brings up the menu when the game starts.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-		
 		borderPane = new BorderPane();
 		Scene scene = new Scene(borderPane, 1000, 800);
 		setUp();
@@ -45,6 +48,10 @@ public class Menu extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * Sets up the screen for the menu upon the game being started.
+	 * @throws FileNotFoundException
+	 */
 	public void setUp() throws FileNotFoundException {
 		HBox hBox = new HBox();
 //		FileInputStream in = new FileInputStream(
@@ -86,6 +93,12 @@ public class Menu extends Application {
 		borderPane.setBackground(background);
 	}
 
+	/**
+	 * Handles what to do when a button is clicked and sets the appropriate
+	 * difficulty level.
+	 * 
+	 * @param stage	Stage object of the player's screen.
+	 */
 	public void buttonEvent(Stage stage) {
 		easyButton.setOnAction((ActionEvent e1) -> {
 			// load Easy model

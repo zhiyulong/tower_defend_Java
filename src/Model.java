@@ -7,6 +7,11 @@ public class Model {
 	
 	private ArrayList<ArrayList<Integer>> board;
 	
+	/**
+	 * Constructor for a Model object.
+	 * 
+	 * @param mode	String of the difficulty level.
+	 */
 	public Model(String mode) {
 		if (mode.equals("easy"))
 			currency = 15;
@@ -17,6 +22,9 @@ public class Model {
 		init();
 	}
 	
+	/**
+	 * Sets up the game board.
+	 */
 	public void init() {
 		board = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
@@ -31,6 +39,15 @@ public class Model {
 		
 	}
 	
+	/**
+	 * Adds a new Tower to the model.
+	 * 
+	 * @param row	int of the row of the new Tower.
+	 * @param col	int of the col of the new Tower.
+	 * @param id	int of the id of the type of Tower.
+	 * 
+	 * @return		int of the id of the type of tower.
+	 */
 	public int addTower(int row, int col, int id) {
 		if (board.get(row).get(col) != 0) 
 			return 0;
@@ -39,6 +56,14 @@ public class Model {
 		return id;
 	}
 	
+	/**
+	 * Removes a Tower from the model.
+	 * 
+	 * @param row	int of the row of the Tower to be removed.
+	 * @param col	int of the col of the Tower to be removed.
+	 * 
+	 * @return		int of the id of the Tower being removed.
+	 */
 	public int removeTower(int row, int col) {
 		int id = board.get(row).get(col);
 		if (id != 0) 
