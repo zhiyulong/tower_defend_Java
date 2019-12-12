@@ -8,7 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-public class Enemie extends Observable {
+/**
+ * 
+ * This class is an implement of a single enemy.
+ * It's used for GUI only, implement the visualization of each 
+ * enemy that shows on screen.
+ *
+ */
+public class EnemieGUI extends Observable {
 
 	private int enemieID;
 	private ImageView image;
@@ -29,7 +36,7 @@ public class Enemie extends Observable {
 	 * @param mode		The difficulty level.
 	 * @param faster	Are the enemies moving 5x faster than normal?
 	 */
-	public Enemie(int num, int row, String mode, boolean faster) {
+	public EnemieGUI(int num, int row, String mode, boolean faster) {
 		this.row = row;
 		
 		live = new int[] { 50, 70, 80, 100 };
@@ -71,7 +78,11 @@ public class Enemie extends Observable {
 			}
 		});
 	}
-
+	
+	/**
+	 * Get the currently translate X position of this enemy
+	 * @return the distance it has been traveled currently
+	 */
 	public double getTransX() {
 		return 584 + image.getTranslateX();
 	}

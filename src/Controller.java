@@ -1,3 +1,9 @@
+
+/**
+ * 
+ * This class is the controller of the game.
+ *
+ */
 public class Controller {
 
 	

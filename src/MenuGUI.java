@@ -20,7 +20,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Menu extends Application {
+/**
+ * This class implement the GUI of the begin menu.
+ * the menu shows at the beginning of the game.
+ * 
+ */
+public class MenuGUI extends Application {
 
 	private BorderPane borderPane;
 	private Button easyButton;
@@ -29,7 +34,7 @@ public class Menu extends Application {
 	/**
 	 * Constructor for a Menu object.
 	 */
-	public Menu() {
+	public MenuGUI() {
 		super();
 		
 	}

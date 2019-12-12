@@ -17,7 +17,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Tower extends Observable {
+/**
+ * 
+ * This class is an implement of a single tower.
+ * It's used for GUI only, implement the visualization of each 
+ * tower that shows on screen.
+ *
+ */
+public class TowerGUI extends Observable {
 
 	private int towerID;
 	private ImageView image;
@@ -29,7 +36,7 @@ public class Tower extends Observable {
 
 	private int col;
 	private int row;
-	private ArrayList<Enemie> targets;
+	private ArrayList<EnemieGUI> targets;
 
 	private ChangeListener listener;
 
@@ -40,7 +47,7 @@ public class Tower extends Observable {
 	 * @param col	col the Tower should occupy
 	 * @param row	row the Tower should occupy
 	 */
-	public Tower(int num, int col, int row) {
+	public TowerGUI(int num, int col, int row) {
 		powerSpeed = new double[] { 5, 3, 2, 1.5, 1, 0.6 };
 		powerColor = new Color[] { Color.RED, Color.BLUE, Color.DEEPPINK, Color.YELLOW, 
 				Color.GREEN, Color.ORANGE };
@@ -64,7 +71,7 @@ public class Tower extends Observable {
 		movement.setNode(movingPower);
 		movement.play();
 		
-		targets = new ArrayList<Enemie>();
+		targets = new ArrayList<EnemieGUI>();
 		movementEvent();
 
 	}
@@ -78,7 +85,7 @@ public class Tower extends Observable {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				try {
-					for (Enemie target : targets) {
+					for (EnemieGUI target : targets) {
 						if (target.getBlood() > 0) {
 							int targetX = getCol(target.getTransX()) + 1;
 							int x = getCol(movingPower.getTranslateX()) + col;
@@ -136,7 +143,7 @@ public class Tower extends Observable {
 	 * 
 	 * @param targets	Enemie objects that are to be targeted.
 	 */
-	public void setTarget(ArrayList<Enemie> targets) {
+	public void setTarget(ArrayList<EnemieGUI> targets) {
 		this.targets = targets;
 	}
 	
@@ -145,7 +152,7 @@ public class Tower extends Observable {
 	 * 
 	 * @param ene	Enemie object to be targeted.
 	 */
-	public void addTarget(Enemie ene) {
+	public void addTarget(EnemieGUI ene) {
 		targets.add(ene);
 	}
 

@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * This class implement the Model
+ */
 public class Model {
 
 	private int currency;
@@ -102,10 +105,18 @@ public class Model {
 		return currency;
 	}
 
+	/**
+	 * This method set up the blood to a new value
+	 * @param blood is the new blood value
+	 */
 	public void setBlood(double blood) {
 		this.blood = blood;
 	}
 	
+	/**
+	 * This method returns the blood value
+	 * @return current blood value
+	 */
 	public double getBlood() {
 		return blood;
 	}

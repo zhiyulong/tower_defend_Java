@@ -32,6 +32,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * This class is the implementation of View
+ *
+ */
 public class View extends Application implements Observer {
 
 	private Controller controller;
@@ -48,8 +53,8 @@ public class View extends Application implements Observer {
 	
 	private String mode;
 	
-	private ArrayList<ArrayList<Tower>> board;
-	private ArrayList<ArrayList<Enemie>> targets;
+	private ArrayList<ArrayList<TowerGUI>> board;
+	private ArrayList<ArrayList<EnemieGUI>> targets;
 	private int enemiesPerTime;
 	private int enemiesSize;
 	
@@ -76,6 +81,9 @@ public class View extends Application implements Observer {
 		init();
 	}
 	
+	/**
+	 * initialize the game board array list for GUI.
+	 */
 	public void init() {
 		// set MVC relation first
 		controller = TowerDefense.setRelations(this, mode);
@@ -83,7 +91,7 @@ public class View extends Application implements Observer {
 		board = new ArrayList<>();
 		targets = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
-			ArrayList<Tower> column = new ArrayList<>();
+			ArrayList<TowerGUI> column = new ArrayList<>();
 
 			for (int j = 0; j < 9; j++) {
 				column.add(null);
@@ -91,7 +99,7 @@ public class View extends Application implements Observer {
 
 			board.add(column);
 
-			ArrayList<Enemie> targetsPerRow = new ArrayList<Enemie>();
+			ArrayList<EnemieGUI> targetsPerRow = new ArrayList<EnemieGUI>();
 			targets.add(targetsPerRow);
 		}
 	}
@@ -161,6 +169,8 @@ public class View extends Application implements Observer {
 	
 	/**
 	 * Adds enemies to the board in order to start the game.
+	 * This method will be called when the number of enemies 
+	 * is less or equal to 2.
 	 */
 	private void addEnemies() {
 		if (controller.getBlood() > 0) {
@@ -170,7 +180,7 @@ public class View extends Application implements Observer {
 				int row = rand.nextInt(6);
 				int enimeID = rand.nextInt(4);
 				
-				Enemie enemie = new Enemie(enimeID, row, mode, nonChangableMode);
+				EnemieGUI enemie = new EnemieGUI(enimeID, row, mode, nonChangableMode);
 				enemie.addObserver(this);
 				
 				addTargets(row, enemie);
@@ -187,10 +197,10 @@ public class View extends Application implements Observer {
 	 * @param row	row to add targets to.
 	 * @param ene	Enemie object to become a valid target for the row.
 	 */
-	public synchronized void addTargets(int row, Enemie ene) {
+	public synchronized void addTargets(int row, EnemieGUI ene) {
 		targets.get(row).add(ene);
 		
-		for (Tower tower: board.get(row)) {
+		for (TowerGUI tower: board.get(row)) {
 			if (tower != null) {
 				tower.addTarget(ene);
 			}
@@ -263,7 +273,7 @@ public class View extends Application implements Observer {
 			int row = pos[0];
 			int col = pos[1];
 			
-			Tower tower = new Tower(id, col, row);
+			TowerGUI tower = new TowerGUI(id, col, row);
 			tower.addObserver(this);
 			
 			gameboard.add(tower.getView(), col, row);
@@ -286,7 +296,7 @@ public class View extends Application implements Observer {
 		currency_label.setText("$ " + controller.getCurrency());
 		
 		// remove the tower
-		Tower tower = board.get(row).get(col);
+		TowerGUI tower = board.get(row).get(col);
 		tower.remove();
 		
 		board.get(row).set(col, null);
@@ -536,26 +546,26 @@ public class View extends Application implements Observer {
 	public synchronized void update(Observable o, Object arg) {
 
 		// enemy arrived home
-		if (o instanceof Enemie) {
+		if (o instanceof EnemieGUI) {
 			int enemyID = Character.getNumericValue(arg.toString().charAt(0));
 			controller.arrived(enemyID);
 			
 			blood_label.setText("Blood: " + controller.getBlood());
 			
-			Enemie ene = ((Enemie) o);
+			EnemieGUI ene = ((EnemieGUI) o);
 			ene.remove();
 			removeEnemy(ene.getRow(), ene.getID());
 			enemiesSize--;
 		}
 		// enemy killed by tower
-		else if (o instanceof Tower) {
+		else if (o instanceof TowerGUI) {
 			if (arg instanceof int[]) {
 				// tower met enemy
 				int[] pos = (int[]) arg;
 				board.get(pos[0]).set(pos[1], null);
 			}else {
 				enemiesSize --;
-				removeEnemy(((Tower) o).getRow(), (int) arg);
+				removeEnemy(((TowerGUI) o).getRow(), (int) arg);
 			}
 		}		
 		
@@ -583,12 +593,12 @@ public class View extends Application implements Observer {
 	 * @param id	id of the Tower that is attacking the enemy.
 	 */
 	private void removeEnemy(int row, int id) {
-		Enemie ene = null;
-		for (Enemie target: targets.get(row)) {
+		EnemieGUI ene = null;
+		for (EnemieGUI target: targets.get(row)) {
 			if (target.getID() == id) {
 				ene = target;
 				targets.get(row).remove(target);
-				for (Tower tower: board.get(row)) {
+				for (TowerGUI tower: board.get(row)) {
 					if (tower != null)
 						tower.setTarget(targets.get(row));
 				}
