@@ -2,7 +2,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 
-//
+/**
+ * @author yunxiaohu test case for controller and model class test each method
+ *         in these two class
+ */
 public class TestCase {
 
 	@Test
